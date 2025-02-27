@@ -1,4 +1,15 @@
 
+'''
+Data that must be interpreted:
+    BMS:
+        battery voltage
+        the max and min temp of batteries
+        the current coming out of the batteries  
+    Camera:
+        the display from the backup camera
+    ???:
+        speed of the vehicle -  WIP on how we are actually going to do this, chances are, we take some measurements, put them into a formula and calculate the speed
+'''
 
 import cantools
 import random
@@ -6,11 +17,13 @@ import time
 import tkinter as tk
 from tkinter import ttk
 
+
 # Define the ID constant
 ID = 256
+FILE_PATH = "Experimentation/ReadingData/TestData/test2.dbc"
 
 # Load the CAN database
-db = cantools.database.load_file('Experimentation/ReadingData/TestData/test2.dbc')  # Path to your .dbc file
+db = cantools.database.load_file(FILE_PATH)  # Path to your .dbc file
 
 # Simulate CANbus messages (for testing)
 def simulate_can_data():
