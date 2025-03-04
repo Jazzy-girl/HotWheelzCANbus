@@ -64,3 +64,35 @@ Unless you are using avirtual machine, your laptop will likely complain. To bypa
 ```bash
 pip3 install --break-system-packages python-can cantools
 ```
+
+## 3. Install opencv
+
+By running this command, you are installing dependencies needed to use the Raspberry Pi camera
+
+### Virtual Machine
+
+```bash
+???
+```
+
+### Linux
+
+```bash
+sudo apt install python3-can
+```
+
+### Windows
+
+```bash
+pip install can (maybe?)
+```
+
+### Macbook (if using Homebrew)
+
+```bash
+ brew install python-tk
+```
+
+## 4. Running
+
+Just run the ReceivingDataCode.py as you normally would, a display window will open with simple GUI
