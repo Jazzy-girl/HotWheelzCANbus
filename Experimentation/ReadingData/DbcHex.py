@@ -5,8 +5,16 @@ import cantools.database
 db = cantools.database.load_file("Experimentation/DBC Data/start2.dbc")
 
 # Example raw CAN frame
-can_id = 0x03B
-data = bytes.fromhex("00003DCE09")
+"""
+The example data:
+t03B5FFFE00003DCE09
+
+the id: 03B
+skip: the 5FFFE
+use: the 00003DCE09
+"""
+can_id = 0x03B # Just use the base hex, not the letters after?
+data = bytes.fromhex("00003DCE09") # this is skipping
 
 
 
