@@ -22,6 +22,8 @@ VALID_IDs = [
     '6B2'
 ]
 
+INVALID_IDs = set()
+
 # Needed Ids:
 # 0x08, 0x81, 0x82
 
@@ -41,7 +43,9 @@ with open(filename, 'r') as file:
             message = db.decode_message(id, data)
             print(message)
         else:
-            print(f"Unknown CAN ID {hex(id)}, check DBC file.")
+            print(f"Unknown CAN ID {hex(id)}.")
+            INVALID_IDs.add(id)
+    print(f"Unknown IDs: {INVALID_IDs}")
         
 """
 
