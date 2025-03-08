@@ -42,7 +42,6 @@ with open(filename, 'r') as file:
         if(hex_string in VALID_IDs):
             data = bytes.fromhex(line[5:])
             message = db.decode_message(id, data)
-            
             print(message)
         else:
             print(f"Unknown CAN ID {hex(id)}.")
