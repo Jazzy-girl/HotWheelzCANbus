@@ -17,9 +17,10 @@ can_id = 0x03B # Just use the base hex, not the letters after?
 data = bytes.fromhex("FFFE00003DCE09") # this is skipping
 
 VALID_IDs = [
-    '03B',
-    '3CB',
-    '6B2'
+    #'03B',
+    #'3CB',
+    #'6B2',
+    '080'
 ]
 
 MESSAGES = set()
@@ -44,7 +45,7 @@ with open(filename, 'r') as file:
             message = db.decode_message(id, data)
             print(message)
         else:
-            print(f"Unknown CAN ID {hex(id)}.")
+           # print(f"Unknown CAN ID {hex(id)}.")
             INVALID_IDs.add(id)
     print(f"Unknown IDs: {INVALID_IDs}")
         
