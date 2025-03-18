@@ -57,11 +57,18 @@ BO_ 128 ThermMsg1: 4 Vector__XXX
  SG_ CRCChecksum : 31|8@0+ (1,0) [0|0] "" Vector__XXX
 
 BO_ 129 ThermMsg2: 4 Vector__XXX
+ SG_ LocalThermID : 7|8@0+ (1,1) [0|0] "" Vector__XXX
+ SG_ ThermistorValue : 15|8@0+ (1,0) [0|0] "C" Vector__XXX
+ SG_ FaultPresent : 23|8@0+ (1,0) [0|0] "" Vector__XXX
+ SG_ CRCChecksum : 31|8@0+ (1,0) [0|0] "" Vector__XXX
 
 BO_ 130 ThermMsg3: 8 Vector__XXX
 
 
 CM_ SG_ 128 HighLowIndicator "";
+CM_ SG_ 129 LocalThermID "Offset by 1 bc zero-based";
 VAL_ 1714 CustomFlag 0 "False" 1 "True" ;
 VAL_ 128 HighLowIndicator 5 "Low" 6 "High" 7 "Low" 8 "High" ;
 VAL_ 128 FaultPresent 1 "True" 0 "False" ;
+VAL_ 129 LocalThermID 0 "First" 1 "Second" 2 "Third" 3 "Fourth" ;
+VAL_ 129 FaultPresent 0 "False" 1 "True" ;
