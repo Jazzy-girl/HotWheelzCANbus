@@ -19,11 +19,14 @@ data = bytes.fromhex("FFFE00003DCE09") # this is skipping
 VALID_IDs = [
     #'03B',
     #'3CB',
-    #'6B2',
+    '6B2',
     #'080',
     #'081',
-    '082'
+    #'082'
 ]
+
+
+'t6B28002F00CC0072093043A6'
 
 MESSAGES = set()
 INVALID_IDs = set()
@@ -64,7 +67,7 @@ information['PackSOC'] = None
 db = cantools.database.load_file("Experimentation/DBC Data/FaultsWithThermistorData.dbc")
 
 # Load data fike
-filename = "Experimentation/ReadingData/TestData/CANData1/3.17_SMALL.txt"
+filename = "Experimentation/ReadingData/TestData/CANData1/3-22-25.txt"
 with open(filename, 'r') as file:
     for line in file:
         # Process each line
