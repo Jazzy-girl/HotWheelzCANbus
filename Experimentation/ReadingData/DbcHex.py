@@ -10,7 +10,12 @@ VALID_IDs = [
     '02C'
 ]
 
-DBC_FILE = 'Experimentation/DBC Data/LATEST_3_26.dbc'
+
+# LATEST_DBC.dbc holds the latest dbc file
+# test_26.txt holds 2 test lines of data
+# LATEST_DATA.txt holds the most updated data
+
+DBC_FILE = 'Experimentation/DBC Data/LATEST_DBC.dbc'
 SIM_DATA_FILE = 'Experimentation/ReadingData/TestData/CANData1/test_26.txt'
 
 FIELDS = {
@@ -25,6 +30,8 @@ FIELDS = {
     'Thermistor Fault'
 }
 
+# Values in ERROR_DICT are identical to the last 4 fields in FIELDS.
+# ERROR_DICT is used for checking Custom Flag's first 4 bits for errors and updating the 'information' dict.
 ERROR_DICT = {
     0: 'Low Cell Voltage Fault',
     1: 'Current Sensor Fault',
@@ -63,11 +70,9 @@ with open(SIM_DATA_FILE, 'r') as file:
                 represent a possible error (see ERROR_DICT for the order)
                 """
                 if (key == 'CustomFlag'):
-                    #print(message[key])
                     bits = BitArray(message[key].to_bytes()).bin
-                    #print(bits)
                     for index in range(0, 4):
-                        if bits[index] == '1':
+                        if bits[index] == '1': # if there IS an error
                             information[ERROR_DICT[index]] = 1
                     continue
             print(information)
