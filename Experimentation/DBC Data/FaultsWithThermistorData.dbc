@@ -63,12 +63,12 @@ BO_ 129 ThermMsg2: 4 Vector__XXX
  SG_ CRCChecksum : 31|8@0+ (1,0) [0|0] "" Vector__XXX
 
 BO_ 130 ThermMsg3: 8 Vector__XXX
- SG_ CRCChecksum : 7|8@0+ (1,0) [0|0] "" Vector__XXX
- SG_ LowestThermistorID : 15|16@0+ (1,1) [0|0] "" Vector__XXX
- SG_ HighestThermistorID : 31|8@0+ (1,0) [0|0] "" Vector__XXX
- SG_ FaultPresent : 39|8@0+ (1,0) [0|0] "" Vector__XXX
- SG_ ThermistorValue : 47|8@0+ (1,0) [0|0] "C" Vector__XXX
- SG_ GlobalThermistorID : 55|16@0+ (1,0) [0|0] "" Vector__XXX
+ SG_ CRCChecksum : 63|8@0+ (1,0) [0|0] "" Vector__XXX
+ SG_ LowestThermistorID : 47|8@0+ (1,0) [0|0] "" Vector__XXX
+ SG_ HighestThermistorID : 39|8@0+ (1,0) [0|0] "" Vector__XXX
+ SG_ FaultPresent : 31|8@0+ (1,0) [0|0] "" Vector__XXX
+ SG_ ThermistorValue : 23|8@0+ (1,0) [0|0] "C" Vector__XXX
+ SG_ GlobalThermistorID : 7|16@0+ (1,0) [0|0] "" Vector__XXX
 
 
 CM_ SG_ 128 HighLowIndicator "";

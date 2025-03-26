@@ -1,6 +1,7 @@
 from queue import Full
 import cantools, can
 import cantools.database
+from bitstring import BitArray
 
 
 
@@ -17,38 +18,47 @@ can_id = 0x03B # Just use the base hex, not the letters after?
 data = bytes.fromhex("FFFE00003DCE09") # this is skipping
 
 VALID_IDs = [
+    # NEW
+    '02B',
+    '02C'
+
+
     #'03B',
     #'3CB',
     #'6B2',
     #'080',
     #'081',
-    '082'
+    #'082'
 ]
+
+
+'t6B28002F00CC0072093043A6'
 
 MESSAGES = set()
 INVALID_IDs = set()
 
-FIELDS = set()
+FIELDS = {
+    'PackSOC',
+    'PackCurrent',
+    'PackInstVoltage',
+    'HighTemp',
+    'LowTemp',
+    'Low Cell Voltage Fault',
+    'Current Sensor Fault',
+    'Pack Voltage Sensor Fault',
+    'Thermistor Fault'
+}
+
+ERROR_DICT = {
+    0: 'Low Cell Voltage Fault',
+    1: 'Current Sensor Fault',
+    2: 'Pack Voltage Sensor Fault',
+    3: 'Thermistor Fault'
+}
 
 information = dict()
-information['CRCChecksum'] = None
-information['PackCurrent'] = None
-information['PackDCL'] = None
-information['PackInstVoltage'] = None
-information['PackAmphours'] = None
-information['SimulatedSOC'] = None
-information['PackOpenVolt'] = None
-information['PackCCL'] = None
-information['ThermistorValue'] = None
-information['PackRes'] = None
-information['FaultPresent'] = None
-information['HighTemp'] = None
-information['CustomFlag'] = None # ?? tbis is not the right implementation. CustomFlag currently contains multiple pieces of information.
-                                # consider you've implemented the CustomFlag .dbc w/out interpreting data that used the CustomFlag correctly.
-                                # '28' as a value is vestigial. Test with new data from Rachael.
-information['LowTemp'] = None
-information['HighLowIndicator'] = None
-information['PackSOC'] = None
+for field in FIELDS:
+    information[field] = None
 
 # Need to update each specified field whenever it is updated.
 # Have a Dict of fields & values. The UI accesses and displays the field : value s of the dict.
@@ -61,10 +71,10 @@ information['PackSOC'] = None
 # 0x08, 0x81, 0x82
 
 # Load the DBC file
-db = cantools.database.load_file("Experimentation/DBC Data/FaultsWithThermistorData.dbc")
+db = cantools.database.load_file("Experimentation/DBC Data/Simplified_3_26.dbc")
 
 # Load data fike
-filename = "Experimentation/ReadingData/TestData/CANData1/3.17_SMALL.txt"
+filename = "Experimentation/ReadingData/TestData/CANData1/test_26.txt"
 with open(filename, 'r') as file:
     for line in file:
         # Process each line
@@ -79,15 +89,20 @@ with open(filename, 'r') as file:
             data = bytes.fromhex(line[5:])
             message = db.decode_message(id, data)
             #print(f"Thermistor Temp: {message['ThermistorValue']} degrees Celsius")
-            """
+            
             for key in message.keys():
-                information[key] = message[key]
-                if(information['HighLowIndicator'] == 5):
-                    information['HighLowIndicator'] = 'Low'
-                else:
-                    information['HighLowIndicator'] = 'High'
-            """
-            print(message)
+                if (key == 'CustomFlag'):
+                    print(message[key])
+                    bits = BitArray(message[key].to_bytes()).bin
+                    print(bits)
+                    for index in range(0, 4):
+                        if bits[index] == '1':
+                            information[ERROR_DICT[index]] = 1
+                    continue
+            print(information)
+                #information[key] = message[key]
+            
+            #print(message)
             #print(information)
         else:
            # print(f"Unknown CAN ID {hex(id)}.")
