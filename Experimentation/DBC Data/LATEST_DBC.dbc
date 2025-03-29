@@ -33,7 +33,7 @@ BO_ 43 Msg1: 8 Vector__XXX
  SG_ LowTemp : 55|8@0+ (1,0) [0|0] "" Vector__XXX
  SG_ HighTemp : 47|8@0+ (1,0) [0|0] "" Vector__XXX
  SG_ PackInstVoltage : 31|16@0+ (0.1,0) [0|0] "" Vector__XXX
- SG_ PackCurrent : 15|16@0- (0.1,0) [0|0] "" Vector__XXX
+ SG_ PackCurrent : 15|16@0- (1,0) [0|0] "" Vector__XXX
  SG_ PackSOC : 7|8@0+ (1,0) [0|0] "" Vector__XXX
 
 BO_ 44 Msg2: 2 Vector__XXX
