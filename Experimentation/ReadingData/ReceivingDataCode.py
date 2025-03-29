@@ -6,8 +6,8 @@ import cv2
 import PIL.Image, PIL.ImageTk  # For displaying images in Tkinter
 
 # Load the CAN database
-ID = 256
-db = cantools.database.load_file('Experimentation/ReadingData/TestData/test2.dbc')
+ID = 43 # Message 02B
+db = cantools.database.load_file('Experimentation/DBC DATA/LATEST_DBC.dbc')
 
 # Simulate CANbus messages (for testing)
 def simulate_can_data():
@@ -24,10 +24,11 @@ def create_display_window():
     root.title("Car Monitoring System")
 
     # Define parameters to display (now aligned with the actual DBC signal names)
-    parameters = ["Pack SOC", "Pack Current", "Pack Inst. Voltage", "High Temp", "Low Temp"]  # Add all the parameters you want
+    parameters = ['PackSOC', 'PackCurrent', 'PackInstVoltage', 'HighTemp', 'LowTemp',]  # Add all the parameters you want
     fields = {}  # Store Label widgets
 
     # Define faults and indices of faults in the Custom Flag
+    
     # if a fault is equal to one, show it
     faults = {'Low Cell Voltage Fault': 0, 'Current Sensor Fault': 0, 'Pack Voltage Sensor Fault': 0, 'Thermistor Fault': 0}
     # this is the indices of the faults in the first 4 bits of the 8 bit Custom Flag signal
