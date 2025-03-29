@@ -7,7 +7,7 @@ from bitstring import BitArray
 VALID_IDs = [
     # UPDATED
     '02B',
-    #'02C'
+    '02C'
 ]
 
 

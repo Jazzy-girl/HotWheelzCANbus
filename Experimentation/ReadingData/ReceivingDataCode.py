@@ -24,8 +24,19 @@ def create_display_window():
     root.title("Car Monitoring System")
 
     # Define parameters to display (now aligned with the actual DBC signal names)
-    parameters = ["Temp", "High Temp", "Low Temp", "Summed Pack Voltage", "Pack Current", "Speed"]  # Add all the parameters you want
+    parameters = ["Pack SOC", "Pack Current", "Pack Inst. Voltage", "High Temp", "Low Temp"]  # Add all the parameters you want
     fields = {}  # Store Label widgets
+
+    # Define faults and indices of faults in the Custom Flag
+    # if a fault is equal to one, show it
+    faults = {'Low Cell Voltage Fault': 0, 'Current Sensor Fault': 0, 'Pack Voltage Sensor Fault': 0, 'Thermistor Fault': 0}
+    # this is the indices of the faults in the first 4 bits of the 8 bit Custom Flag signal
+    customFlagIndices = {
+        0: 'Low Cell Voltage Fault',
+        1: 'Current Sensor Fault',
+        2: 'Pack Voltage Sensor Fault',
+        3: 'Thermistor Fault'
+    }
 
     # Create UI elements for BMS data
     for param in parameters:
