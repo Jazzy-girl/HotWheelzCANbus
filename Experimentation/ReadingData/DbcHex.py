@@ -7,7 +7,7 @@ from bitstring import BitArray
 VALID_IDs = [
     # UPDATED
     '02B',
-    '02C'
+    #'02C'
 ]
 
 
@@ -16,7 +16,7 @@ VALID_IDs = [
 # LATEST_DATA.txt holds the most updated data
 
 DBC_FILE = 'Experimentation/DBC Data/LATEST_DBC.dbc'
-SIM_DATA_FILE = 'Experimentation/ReadingData/TestData/CANData1/test_26.txt'
+SIM_DATA_FILE = 'Experimentation/ReadingData/TestData/CANData1/LATEST_DATA.txt'
 
 FIELDS = {
     'PackSOC',
@@ -75,4 +75,5 @@ with open(SIM_DATA_FILE, 'r') as file:
                         if bits[index] == '1': # if there IS an error
                             information[ERROR_DICT[index]] = 1
                     continue
-            print(information)
+            #print(information)
+            print(message)
