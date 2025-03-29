@@ -48,6 +48,7 @@ db = cantools.database.load_file(DBC_FILE)
 
 # Load data fike
 with open(SIM_DATA_FILE, 'r') as file:
+    i = 0
     for line in file:
         # Process each line
         # first letter is useless
@@ -57,11 +58,14 @@ with open(SIM_DATA_FILE, 'r') as file:
         hex_string = line[1:4]
         
         id = int(hex_string, 16)
+        i+=1
+        if(i == 10):
+            break
+
         if(hex_string in VALID_IDs):
             data = bytes.fromhex(line[5:])
             message = db.decode_message(id, data)
             #print(f"Thermistor Temp: {message['ThermistorValue']} degrees Celsius")
-            
             for key in message.keys():
                 information[key] = message[key]
                 """

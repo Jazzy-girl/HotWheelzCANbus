@@ -1,3 +1,5 @@
+import time
+from bitstring import BitArray
 import cantools
 import random
 import tkinter as tk
@@ -6,8 +8,16 @@ import cv2
 import PIL.Image, PIL.ImageTk  # For displaying images in Tkinter
 
 # Load the CAN database
+
+DBC_FILE = 'Experimentation/DBC Data/LATEST_DBC.dbc'
+SIM_DATA_FILE = 'Experimentation/ReadingData/TestData/CANData1/LATEST_DATA.txt'
+VALID_IDs = [
+    '02B', 
+    '02C'
+    ]
+
 ID = 43 # Message 02B
-db = cantools.database.load_file('Experimentation/DBC DATA/LATEST_DBC.dbc')
+db = cantools.database.load_file(DBC_FILE)
 
 # Simulate CANbus messages (for testing)
 def simulate_can_data():
@@ -24,13 +34,14 @@ def create_display_window():
     root.title("Car Monitoring System")
 
     # Define parameters to display (now aligned with the actual DBC signal names)
-    parameters = ['PackSOC', 'PackCurrent', 'PackInstVoltage', 'HighTemp', 'LowTemp',]  # Add all the parameters you want
+    parameters = ['PackSOC', 'PackCurrent', 'PackInstVoltage', 'HighTemp', 'LowTemp', '_12vSupply']  # Add all the parameters you want + ADD _12vSupply
     fields = {}  # Store Label widgets
 
     # Define faults and indices of faults in the Custom Flag
     
     # if a fault is equal to one, show it
-    faults = {'Low Cell Voltage Fault': 0, 'Current Sensor Fault': 0, 'Pack Voltage Sensor Fault': 0, 'Thermistor Fault': 0}
+    faults = {'Low Cell Voltage Fault', 'Current Sensor Fault', 'Pack Voltage Sensor Fault', 'Thermistor Fault'}
+    faultFields = {}
     # this is the indices of the faults in the first 4 bits of the 8 bit Custom Flag signal
     customFlagIndices = {
         0: 'Low Cell Voltage Fault',
@@ -51,6 +62,19 @@ def create_display_window():
         data_label.pack(side="right", padx=5)
 
         fields[param] = data_label  # Store Label widget
+    
+    # Create Custom Flag Fields
+    for fault in faults:
+        frame = ttk.Frame(root)
+        frame.pack(pady=5, padx=20, fill="x")
+
+        label = ttk.Label(frame, text=f"{fault}:", font=("Arial", 14))
+        label.pack(side="left", padx=5)
+
+        data_label = ttk.Label(frame, text="0", font=("Arial", 14), width=15, anchor="e")  # Default 0 value
+        data_label.pack(side="right", padx=5)
+
+        faultFields[fault] = data_label # Store Label widget
 
     # Function to update display fields
     def update_display():
@@ -72,12 +96,80 @@ def create_display_window():
                     label.update_idletasks()  # Force update of the label
                 else:
                     print(f"Key {param} not found in decoded message")
+            
+            # Check Custom Flag
+            if ('CustomFlag' in decoded_msg):
+                bits = BitArray(decoded_msg['CustomFlag'].to_bytes()).bin
+                for index in range(0, 4):
+                    label = faultFields[customFlagIndices[index]]
+                    value = ""
+                    if(bits[index] == '1'):
+                        value = "ERROR!"
+                    label.config(text=f"{value}")
+                    label.update_idletasks()
+
+                        
 
         except Exception as e:
             print(f"Error decoding CAN message: {e}")
 
         # Update every 2 seconds
         root.after(2000, update_display)
+    
+    def read_data():
+        fileLines = []
+        with open(SIM_DATA_FILE, 'r') as file:
+            print("Opening file")
+            for line in file:
+                # Process each line
+                # first letter is useless
+                # next three are the hex
+                # next char is useless
+                # final chars are the data
+                fileLines.append(line.strip())
+            print("Done reading!")
+
+        return fileLines
+
+    def show_data(list=None, i=0):
+        print(i)
+        if(list == None):
+            return 
+        if(i >= len(list)):
+            return
+        line = list[i]
+        hex_string = line[1:4]
+        if(hex_string in VALID_IDs):
+            id = int(hex_string, 16)
+            data = bytes.fromhex(line[5:])
+            message = db.decode_message(id, data)
+            # Print the decoded message and keys to debug
+            print("Decoded Message:", message)
+            print("Keys in decoded message:", message.keys())
+
+            for param, label in fields.items():
+                # Directly use the parameter name as the key
+                if param in message:
+                    value = message[param]
+                    print(f"Updating {param} with value: {value}")  # Debug line to see the value being set
+                    label.config(text=f"{value}")  # Update the label text directly
+                    label.update_idletasks()  # Force update of the label
+                else:
+                    print(f"Key {param} not found in decoded message")
+            
+            # Check Custom Flag
+            if ('CustomFlag' in message):
+                bits = BitArray(message['CustomFlag'].to_bytes()).bin
+                for index in range(0, 4):
+                    label = faultFields[customFlagIndices[index]]
+                    value = ""
+                    if(bits[index] == '1'):
+                        value = "ERROR!"
+                    label.config(text=f"{value}")
+                    label.update_idletasks()
+
+        root.after(0, show_data, list, i+1)
+
 
     # Backup Camera Display
     cam_frame = ttk.Frame(root)
@@ -102,7 +194,8 @@ def create_display_window():
         root.after(50, update_camera)  # Refresh every 50ms
 
     # Start updating UI elements
-    update_display()
+    #update_display() Replaced with...
+    show_data(read_data(), 0)
     update_camera()
 
     root.mainloop()
