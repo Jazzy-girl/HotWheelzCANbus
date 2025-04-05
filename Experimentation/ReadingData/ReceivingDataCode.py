@@ -116,7 +116,7 @@ def create_display_window():
         # Update every 2 seconds
         root.after(2000, update_display)
     
-    def read_data():
+    def read_data(): # reads data from a file. Not useful for actual getting real data
         fileLines = []
         with open(SIM_DATA_FILE, 'r') as file:
             print("Opening file")
@@ -131,7 +131,7 @@ def create_display_window():
 
         return fileLines
 
-    def show_data(list=None, i=0):
+    def show_data(list=None, i=0): # shows data from read_data above. Not useful for actual getting real data
         print(i)
         if(list == None):
             return 
