@@ -1,5 +1,5 @@
 import time
-from bitstring import BitArray
+from bitstring import BitArray # pip install bitstring
 import cantools
 import random
 import tkinter as tk
