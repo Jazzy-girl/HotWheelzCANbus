@@ -35,15 +35,11 @@ db = cantools.database.load_file(DBC_FILE)
 # Create the Windows
 
 # Window 1: Backup Camera
-camera_window = tk.Tk()
-camera_window.title("Backup Camera")
-camera_window.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}+0+0") # x=0, y=0; Left screen
+
 
 
 # # Window 2: Data Dashboard
-data_window = tk.Tk()
-data_window.title("Data")
-data_window.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}+800+0") # x=800, y=0; Right screen
+
 
 
 # data_window = tk.Tk()
@@ -58,8 +54,10 @@ def simulate_can_data():
     }
 
 # Create the windows
-def create_camera_window():
-
+def create_camera_window(data_window):
+    camera_window = tk.Toplevel(data_window)
+    camera_window.title("Backup Camera")
+    camera_window.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}+0+0") # x=0, y=0; Left screen
 
     cam_frame = ttk.Frame(camera_window)
     cam_frame.pack(pady=20)
@@ -81,9 +79,13 @@ def create_camera_window():
         video_label.config(image=img_tk)  # Update the label to show the image
 
         camera_window.after(50, update_camera)  # Refresh every 50ms
-    camera_window.mainloop()
+    #camera_window.mainloop()
+    update_camera()
 
 def create_data_window():
+    data_window = tk.Tk()
+    data_window.title("Data")
+    data_window.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}+800+0") # x=800, y=0; Right screen
     # root = tk.Tk()
     # root.title("Car Monitoring System")
     # root.geometry("800x480")  # Set the window size
@@ -150,6 +152,8 @@ def create_data_window():
         data_label.pack(side="right", padx=5)
 
         faultFields[fault] = data_label  # Store Label widget
+    
+    create_camera_window(data_window)
 
     # Function to update display fields
     def update_display():
@@ -176,14 +180,10 @@ def create_data_window():
 
         #update_camera()
         data_window.after(2000, update_display)
-
-
-
     # Start updating UI elements
     update_display()
 
     data_window.mainloop()
 
 if __name__ == "__main__":
-    create_camera_window()
     create_data_window()
