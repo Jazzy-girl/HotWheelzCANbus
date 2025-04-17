@@ -39,10 +39,16 @@ camera_window = tk.Tk()
 camera_window.title("Backup Camera")
 camera_window.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}+0+0") # x=0, y=0; Left screen
 
-# Window 2: Data Dashboard
+
+# # Window 2: Data Dashboard
 data_window = tk.Tk()
 data_window.title("Data")
 data_window.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}+800+0") # x=800, y=0; Right screen
+
+
+# data_window = tk.Tk()
+# data_window.title("Data")
+# data_window.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}+800+0") # x=800, y=0; Right screen
 
 # Simulate CANbus messages (for testing)
 def simulate_can_data():
@@ -51,25 +57,11 @@ def simulate_can_data():
         'data': bytearray([random.randint(0, 255) for _ in range(8)])  # Simulated 8-byte CAN message
     }
 
-# Create the main Tkinter window
-def create_display_window():
-    root = tk.Tk()
-    root.title("Car Monitoring System")
-    root.geometry("800x480")  # Set the window size
+# Create the windows
+def create_camera_window():
 
-    # Load the background image
-    #bg_image = PIL.Image.open("/Users/divnamijic/Documents/HotWheelzCANbus-4/Experimentation/ReadingData/Resources/images/bg.jpg")
-    bg_image = PIL.Image.open("Experimentation/ReadingData/Resources/images/bg.jpg")
-    bg_image = bg_image.resize((800, 480))  # Resize to window size
-    bg_image_tk = PIL.ImageTk.PhotoImage(bg_image)
 
-    # Create a label to hold the background image and ensure it persists
-    bg_label = tk.Label(root, image=bg_image_tk)
-    bg_label.image = bg_image_tk  # Keep a reference to the image
-    bg_label.place(x=0, y=0, relwidth=1, relheight=1)  # Ensure it takes up the whole screen
-
-    # Backup Camera Display
-    cam_frame = ttk.Frame(root)
+    cam_frame = ttk.Frame(camera_window)
     cam_frame.pack(pady=20)
 
     cam_label = ttk.Label(cam_frame, text="Backup Camera", font=("Arial", 16))
@@ -77,6 +69,48 @@ def create_display_window():
 
     video_label = tk.Label(cam_frame)
     video_label.pack()
+
+        # # Function to simulate black camera screen
+    def update_camera():
+        # Create a black image (480x640)
+        frame = cv2.UMat(WIDTH_HEIGHT[0], WIDTH_HEIGHT[1], cv2.CV_8UC3)  # Create a black image
+        img = PIL.Image.fromarray(frame.get())  # Convert it to PIL image
+        img_tk = PIL.ImageTk.PhotoImage(image=img)  # Convert to Tkinter-compatible image
+
+        video_label.img_tk = img_tk  # Keep reference to avoid garbage collection
+        video_label.config(image=img_tk)  # Update the label to show the image
+
+        camera_window.after(50, update_camera)  # Refresh every 50ms
+    camera_window.mainloop()
+
+def create_data_window():
+    # root = tk.Tk()
+    # root.title("Car Monitoring System")
+    # root.geometry("800x480")  # Set the window size
+
+    # # Load the background image
+    # #bg_image = PIL.Image.open("/Users/divnamijic/Documents/HotWheelzCANbus-4/Experimentation/ReadingData/Resources/images/bg.jpg")
+    # bg_image = PIL.Image.open("Experimentation/ReadingData/Resources/images/bg.jpg")
+    # bg_image = bg_image.resize((800, 480))  # Resize to window size
+    # bg_image_tk = PIL.ImageTk.PhotoImage(bg_image)
+
+    # # Create a label to hold the background image and ensure it persists
+    # bg_label = tk.Label(root, image=bg_image_tk)
+    # bg_label.image = bg_image_tk  # Keep a reference to the image
+    # bg_label.place(x=0, y=0, relwidth=1, relheight=1)  # Ensure it takes up the whole screen
+
+    # Backup Camera Display
+    # cam_frame = ttk.Frame(root)
+    # cam_frame.pack(pady=20)
+
+    # cam_label = ttk.Label(cam_frame, text="Backup Camera", font=("Arial", 16))
+    # cam_label.pack()
+
+    # video_label = tk.Label(cam_frame)
+    # video_label.pack()
+
+    # Window 2: Data Dashboard
+
 
     parameters = ['PackSOC', 'PackCurrent', 'PackInstVoltage', 'HighTemp', 'LowTemp', '_12vSupply']
     fields = {}
@@ -93,7 +127,7 @@ def create_display_window():
 
     # Create UI elements for BMS data
     for param in parameters:
-        frame = ttk.Frame(root)
+        frame = ttk.Frame(data_window)
         frame.place(y=60 + (parameters.index(param) * 40), relwidth=1)
 
         label = ttk.Label(frame, text=f"{param}:", font=("Arial", 14))
@@ -106,7 +140,7 @@ def create_display_window():
 
     # Create Custom Flag Fields
     for fault in faults:
-        frame = ttk.Frame(root)
+        frame = ttk.Frame(data_window)
         frame.place(y=60 + (len(parameters) * 40) + (list(faults).index(fault) * 40), relwidth=1)
 
         label = ttk.Label(frame, text=f"{fault}:", font=("Arial", 14))
@@ -140,24 +174,16 @@ def create_display_window():
         except Exception as e:
             print(f"Error decoding CAN message: {e}")
 
-        update_camera()
-        root.after(2000, update_display)
-    # # Function to simulate black camera screen
-    def update_camera():
-        # Create a black image (480x640)
-        frame = cv2.UMat(WIDTH_HEIGHT[0], WIDTH_HEIGHT[1], cv2.CV_8UC3)  # Create a black image
-        img = PIL.Image.fromarray(frame.get())  # Convert it to PIL image
-        img_tk = PIL.ImageTk.PhotoImage(image=img)  # Convert to Tkinter-compatible image
+        #update_camera()
+        data_window.after(2000, update_display)
 
-        video_label.img_tk = img_tk  # Keep reference to avoid garbage collection
-        video_label.config(image=img_tk)  # Update the label to show the image
 
-        root.after(50, update_camera)  # Refresh every 50ms
 
     # Start updating UI elements
     update_display()
 
-    root.mainloop()
+    data_window.mainloop()
 
 if __name__ == "__main__":
-    create_display_window()
+    create_camera_window()
+    create_data_window()
