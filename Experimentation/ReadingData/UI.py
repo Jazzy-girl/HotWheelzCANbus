@@ -20,13 +20,10 @@ Monitor 2 displays the data:
 Divnia & Ryanne
 """
 
-
-
-
 # Load the CAN database
 #DBC_FILE = '/Users/divnamijic/Documents/HotWheelzCANbus-4/Experimentation/DBC Data/LATEST_DBC.dbc'
-DBC_FILE = 'Experimentation\DBC Data\LATEST_DBC.dbc'
-SIM_DATA_FILE = 'Experimentation\ReadingData\TestData\CANData1\LATEST_DATA.txt'
+DBC_FILE = 'Experimentation/DBC Data/LATEST_DBC.dbc'
+SIM_DATA_FILE = 'Experimentation/ReadingData/TestData/CANData1/LATEST_DATA.txt'
 #SIM_DATA_FILE = '/Users/divnamijic/Documents/HotWheelzCANbus-4/Experimentation/ReadingData/TestData/CANData1/LATEST_DATA.txt'
 VALID_IDs = ['02B', '02C'] # The valid CANbus message IDs
 WIDTH_HEIGHT = [480, 800]
@@ -42,13 +39,10 @@ camera_window = tk.Tk()
 camera_window.title("Backup Camera")
 camera_window.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}+0+0") # x=0, y=0; Left screen
 
-
 # Window 2: Data Dashboard
 data_window = tk.Tk()
 data_window.title("Data")
 data_window.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}+800+0") # x=800, y=0; Right screen
-
-
 
 # Simulate CANbus messages (for testing)
 def simulate_can_data():
