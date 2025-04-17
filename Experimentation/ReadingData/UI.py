@@ -32,20 +32,6 @@ WINDOW_HEIGHT = 480
 ID = 43  # Message 02B
 db = cantools.database.load_file(DBC_FILE)
 
-# Create the Windows
-
-# Window 1: Backup Camera
-
-
-
-# # Window 2: Data Dashboard
-
-
-
-# data_window = tk.Tk()
-# data_window.title("Data")
-# data_window.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}+800+0") # x=800, y=0; Right screen
-
 # Simulate CANbus messages (for testing)
 def simulate_can_data():
     return {
@@ -86,9 +72,6 @@ def create_data_window():
     data_window = tk.Tk()
     data_window.title("Data")
     data_window.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}+800+0") # x=800, y=0; Right screen
-    # root = tk.Tk()
-    # root.title("Car Monitoring System")
-    # root.geometry("800x480")  # Set the window size
 
     # # Load the background image
     # #bg_image = PIL.Image.open("/Users/divnamijic/Documents/HotWheelzCANbus-4/Experimentation/ReadingData/Resources/images/bg.jpg")
@@ -100,19 +83,6 @@ def create_data_window():
     # bg_label = tk.Label(root, image=bg_image_tk)
     # bg_label.image = bg_image_tk  # Keep a reference to the image
     # bg_label.place(x=0, y=0, relwidth=1, relheight=1)  # Ensure it takes up the whole screen
-
-    # Backup Camera Display
-    # cam_frame = ttk.Frame(root)
-    # cam_frame.pack(pady=20)
-
-    # cam_label = ttk.Label(cam_frame, text="Backup Camera", font=("Arial", 16))
-    # cam_label.pack()
-
-    # video_label = tk.Label(cam_frame)
-    # video_label.pack()
-
-    # Window 2: Data Dashboard
-
 
     parameters = ['PackSOC', 'PackCurrent', 'PackInstVoltage', 'HighTemp', 'LowTemp', '_12vSupply']
     fields = {}
