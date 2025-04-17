@@ -6,12 +6,19 @@ import tkinter as tk
 from tkinter import ttk
 import PIL.Image, PIL.ImageTk  # For displaying images in Tkinter
 import sys
+
+import cv2
 sys.path.append('/Users/divnamijic/Documents/HotWheelzCANbus-4/UI')
 from Speedometer import Speedometer
 
 # Load the CAN database
-DBC_FILE = '/Users/divnamijic/Documents/HotWheelzCANbus-4/Experimentation/DBC Data/LATEST_DBC.dbc'
-SIM_DATA_FILE = '/Users/divnamijic/Documents/HotWheelzCANbus-4/Experimentation/ReadingData/TestData/CANData1/LATEST_DATA.txt'
+#DBC_FILE = '/Users/divnamijic/Documents/HotWheelzCANbus-4/Experimentation/DBC Data/LATEST_DBC.dbc'
+#SIM_DATA_FILE = '/Users/divnamijic/Documents/HotWheelzCANbus-4/Experimentation/ReadingData/TestData/CANData1/LATEST_DATA.txt'
+#BG_IMAGE = "/Users/divnamijic/Documents/HotWheelzCANbus-4/Experimentation/ReadingData/Resources/images/bg.jpg"
+DBC_FILE = 'Experimentation/DBC Data/LATEST_DBC.dbc'
+SIM_DATA_FILE = 'Experimentation/ReadingData/TestData/CANData1/LATEST_DATA.txt'
+
+BG_IMAGE = 'Experimentation/ReadingData/Resources/images/bg.jpg'
 VALID_IDs = ['02B', '02C']
 
 ID = 43  # Message 02B
@@ -30,19 +37,19 @@ def create_display_window():
     root.title("Car Monitoring System")
     root.geometry("800x480")  # Set the window size
 
-    # Load the background image
-    bg_image = PIL.Image.open("/Users/divnamijic/Documents/HotWheelzCANbus-4/Experimentation/ReadingData/Resources/images/bg.jpg")
-    bg_image = bg_image.resize((800, 480))  # Resize to window size
-    bg_image_tk = PIL.ImageTk.PhotoImage(bg_image)
+    # # Load the background image
+    # bg_image = PIL.Image.open(BG_IMAGE)
+    # bg_image = bg_image.resize((800, 480))  # Resize to window size
+    # bg_image_tk = PIL.ImageTk.PhotoImage(bg_image)
 
-    # Create a label to hold the background image and ensure it persists
-    bg_label = tk.Label(root, image=bg_image_tk)
-    bg_label.image = bg_image_tk  # Keep a reference to the image
-    bg_label.place(x=0, y=0, relwidth=1, relheight=1)  # Ensure it takes up the whole screen
+    # # Create a label to hold the background image and ensure it persists
+    # bg_label = tk.Label(root, image=bg_image_tk)
+    # bg_label.image = bg_image_tk  # Keep a reference to the image
+    # bg_label.place(x=0, y=0, relwidth=1, relheight=1)  # Ensure it takes up the whole screen
 
-    # Create an instance of the Speedometer class
-    speedometer = Speedometer(root, width=800, height=480)
-    speedometer.update_speed()  # Example to animate
+    # # Create an instance of the Speedometer class
+    # speedometer = Speedometer(root, width=800, height=480)
+    # speedometer.update_speed()  # Example to animate
 
     # Define parameters to display (now aligned with the actual DBC signal names)
     parameters = ['PackSOC', 'PackCurrent', 'PackInstVoltage', 'HighTemp', 'LowTemp', '_12vSupply']
@@ -83,6 +90,17 @@ def create_display_window():
         data_label.pack(side="right", padx=5)
 
         faultFields[fault] = data_label  # Store Label widget
+    
+    def update_camera():
+        # Create a black image (480x640)
+        frame = cv2.UMat(480, 640, cv2.CV_8UC3)  # Create a black image
+        img = PIL.Image.fromarray(frame.get())  # Convert it to PIL image
+        img_tk = PIL.ImageTk.PhotoImage(image=img)  # Convert to Tkinter-compatible image
+
+        video_label.img_tk = img_tk  # Keep reference to avoid garbage collection
+        video_label.config(image=img_tk)  # Update the label to show the image
+
+        root.after(50, update_camera)  # Refresh every 50ms
 
     # Function to update display fields
     def update_display():
