@@ -29,6 +29,7 @@ VALID_IDs = ['02B', '02C']
 PARAMETERS = ['PackSOC', 'PackCurrent', 'PackInstVoltage', 'HighTemp', 'LowTemp', '_12vSupply']
 FAULTS = ['Low Cell Voltage Fault', 'Current Sensor Fault', 'Pack Voltage Sensor Fault', 'Thermistor Fault']
 DATA_LABELS = ['SOC', 'CURR', 'VOLT', '_12', 'HI', 'LO']
+FAULT_LABELS = ['L. CELL', 'CURRENT', 'PACK', 'THERM']
 
 ID = 43  # Message 02B
 db = cantools.database.load_file(DBC_FILE)
@@ -73,6 +74,7 @@ def create_display_window():
     """
 
     fields = {}
+    faultFields = {}
 
     # make data name & output labels
     for i in range(len(DATA_LABELS)):
@@ -90,16 +92,15 @@ def create_display_window():
         # for accessing DBC data
         fields[PARAMETERS[i]] = output_label
 
-
-        
-
-
-    # Define parameters to display (now aligned with the actual DBC signal names)
+    # make fault labels
+    for i in range(len(FAULT_LABELS)):
+        fault_label = Label(data_frame, text=FAULT_LABELS[i])
+        row = ((i + len(DATA_LABELS)) // 2) * 2
+        col = i % 2
+        fault_label.grid(row=row, column=col)
+        faultFields[FAULTS[i]] = fault_label
     
 
-    # Define faults and indices of faults in the Custom Flag
-    
-    faultFields = {}
     customFlagIndices = {
         0: 'Low Cell Voltage Fault',
         1: 'Current Sensor Fault',
