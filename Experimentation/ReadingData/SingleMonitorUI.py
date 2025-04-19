@@ -1,6 +1,7 @@
 import time
 from bitstring import BitArray
-import cantools
+from cantools import *
+from can import *
 import random
 from tkinter import *
 from tkinter.ttk import *
@@ -8,6 +9,8 @@ import tkinter.font as tkFont
 import PIL.Image, PIL.ImageTk  # For displaying images in Tkinter
 import sys
 
+import cantools
+import can
 import cv2
 sys.path.append('/Users/divnamijic/Documents/HotWheelzCANbus-4/UI')
 from Speedometer import Speedometer
@@ -43,6 +46,12 @@ CAMERA_RATIO = (480, 500) # originally 480 x 640
 ID = 43  # Message 02B
 db = cantools.database.load_file(DBC_FILE)
 
+def get_bms_data():
+    with can.Bus() as bus:
+        for msg in bus:
+            # do something
+            print(msg.data)
+
 # Simulate CANbus messages (for testing)
 def simulate_can_data():
     return {
@@ -56,6 +65,27 @@ def create_display_window():
     root = Tk()
     root.title("Car Monitoring System")
     root.geometry("800x480")  # Set the window size
+
+    # Load the background image
+    # bg_image = PIL.Image.open(BG_IMAGE)
+    # bg_image = bg_image.resize((800, 480))  # Resize to window size
+    # bg_image_tk = PIL.ImageTk.PhotoImage(bg_image)
+
+    # bg_label = Label(root, image=bg_image_tk)
+    # bg_label.image = bg_image_tk
+    # bg_label.place(x=0,y=0, relwidth=1, relheight=1)
+
+    # canvas = Canvas(root)
+    # canvas.pack()
+
+    # canvas.bg_image_tk = bg_image_tk
+    # canvas.create_image(0, 0, image=bg_image_tk, anchor=NW)
+    # canvas.lower()
+
+    # Create a label to hold the background image and ensure it persists
+    # bg_label = Label(root, image=bg_image_tk)
+    # bg_label.image = bg_image_tk  # Keep a reference to the image
+    # bg_label.place(x=0, y=0, relwidth=1, relheight=1)  # Ensure it takes up the whole screen
 
     # Backup Camera Display: Frame
     # the frame to hold the camera
@@ -91,9 +121,9 @@ def create_display_window():
     for i in range(len(DATA_LABELS)*2 + len(FAULT_LABELS)):
         data_frame.rowconfigure(i, weight=1)
 
-    data_font = tkFont.Font(family="Arial", size=15)
-    output_font = tkFont.Font(family="Arial", size=15)
-    fault_font = tkFont.Font(family="Arial", size=12)
+    data_font = tkFont.Font(family="Arial", size=20)
+    output_font = tkFont.Font(family="Arial", size=20)
+    fault_font = tkFont.Font(family="Arial", size=20)
 
     # make separator line
     line = Separator(data_frame, orient=VERTICAL).grid(column=1, columnspan=2, row=0, rowspan=10, sticky=NS)
