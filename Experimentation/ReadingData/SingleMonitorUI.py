@@ -11,6 +11,12 @@ import cv2
 sys.path.append('/Users/divnamijic/Documents/HotWheelzCANbus-4/UI')
 from Speedometer import Speedometer
 
+
+"""
+Single-Window UI to display 6 data fields, 4 possible faults, and the backup camera.
+Uses tkinter's .grid() layout.
+"""
+
 # Load the CAN database
 #DBC_FILE = '/Users/divnamijic/Documents/HotWheelzCANbus-4/Experimentation/DBC Data/LATEST_DBC.dbc'
 #SIM_DATA_FILE = '/Users/divnamijic/Documents/HotWheelzCANbus-4/Experimentation/ReadingData/TestData/CANData1/LATEST_DATA.txt'
@@ -19,6 +25,10 @@ DBC_FILE = 'Experimentation/DBC Data/LATEST_DBC.dbc'
 SIM_DATA_FILE = 'Experimentation/ReadingData/TestData/CANData1/LATEST_DATA.txt'
 BG_IMAGE = 'Experimentation/ReadingData/Resources/images/bg.jpg'
 VALID_IDs = ['02B', '02C']
+
+PARAMETERS = ['PackSOC', 'PackCurrent', 'PackInstVoltage', 'HighTemp', 'LowTemp', '_12vSupply']
+FAULTS = ['Low Cell Voltage Fault', 'Current Sensor Fault', 'Pack Voltage Sensor Fault', 'Thermistor Fault']
+DATA_LABELS = ['SOC', 'CURR', 'VOLT', '_12', 'HI', 'LO']
 
 ID = 43  # Message 02B
 db = cantools.database.load_file(DBC_FILE)
@@ -37,10 +47,10 @@ def create_display_window():
     root.title("Car Monitoring System")
     root.geometry("800x480")  # Set the window size
 
-    # Backup Camera Display
+    # Backup Camera Display: Frame
     # the frame to hold the camera
     cam_frame = Frame(root)
-    cam_frame.pack(pady=20)
+    cam_frame.pack(side=LEFT, pady=20)
 
     # the label to hold 
     cam_label = Label(cam_frame, text="Backup Camera", font=("Arial", 16))
@@ -49,12 +59,46 @@ def create_display_window():
     video_label = Label(cam_frame)
     video_label.pack()
 
-    # Define parameters to display (now aligned with the actual DBC signal names)
-    parameters = ['PackSOC', 'PackCurrent', 'PackInstVoltage', 'HighTemp', 'LowTemp', '_12vSupply']
+    # Data Frame
+    data_frame = Frame(root)
+    data_frame.pack(side=LEFT)
+
+    """
+    This section makes the grid. There are 3 types of labels:
+        1. Data name labels. These don't update. They correspond with #2. use DATA_LABELS.
+        2. Data output labels. They correspond with #1. These update with new input. Must correspond with a dict of the params for the DBC interpretation.
+        3. Fault labels. Change color(?) if return true.
+    
+    The grid is 8 x 2
+    """
+
     fields = {}
 
+    # make data name & output labels
+    for i in range(len(DATA_LABELS)):
+        # row will will jump by 2 every other label.
+        row = (i // 2) * 2
+        # col will either be 0 or 1
+        col = i % 2
+
+        data_label = Label(data_frame, text=DATA_LABELS[i])
+        data_label.grid(row=row, column=col)
+
+        output_label = Label(data_frame, text="DEFAULT")
+        output_label.grid(row=row+1, column=col)
+
+        # for accessing DBC data
+        fields[PARAMETERS[i]] = output_label
+
+
+        
+
+
+    # Define parameters to display (now aligned with the actual DBC signal names)
+    
+
     # Define faults and indices of faults in the Custom Flag
-    faults = {'Low Cell Voltage Fault', 'Current Sensor Fault', 'Pack Voltage Sensor Fault', 'Thermistor Fault'}
+    
     faultFields = {}
     customFlagIndices = {
         0: 'Low Cell Voltage Fault',
@@ -63,31 +107,7 @@ def create_display_window():
         3: 'Thermistor Fault'
     }
 
-    # Create UI elements for BMS data
-    for param in parameters:
-        frame = Frame(root)
-        frame.place(y=60 + (parameters.index(param) * 40), relwidth=1)
-
-        label = Label(frame, text=f"{param}:", font=("Arial", 14))
-        label.pack(side="left", padx=5)
-
-        data_label = Label(frame, text="0", font=("Arial", 14), width=15, anchor="e")
-        data_label.pack(side="right", padx=5)
-
-        fields[param] = data_label  # Store Label widget
-
-    # Create Custom Flag Fields
-    for fault in faults:
-        frame = Frame(root)
-        frame.place(y=60 + (len(parameters) * 40) + (list(faults).index(fault) * 40), relwidth=1)
-
-        label = Label(frame, text=f"{fault}:", font=("Arial", 14))
-        label.pack(side="left", padx=5)
-
-        data_label = Label(frame, text="0", font=("Arial", 14), width=15, anchor="e")
-        data_label.pack(side="right", padx=5)
-
-        faultFields[fault] = data_label  # Store Label widget
+    
     
     def update_camera():
         # Create a black image (480x640)
@@ -126,7 +146,7 @@ def create_display_window():
         root.after(2000, update_display)
 
     # Start updating UI elements
-    update_display()
+    #update_display()
     update_camera()
 
     root.mainloop()
