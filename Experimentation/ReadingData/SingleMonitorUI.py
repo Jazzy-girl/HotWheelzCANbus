@@ -30,6 +30,12 @@ PARAMETERS = ['PackSOC', 'PackCurrent', 'PackInstVoltage', 'HighTemp', 'LowTemp'
 FAULTS = ['Low Cell Voltage Fault', 'Current Sensor Fault', 'Pack Voltage Sensor Fault', 'Thermistor Fault']
 DATA_LABELS = ['SOC', 'CURR', 'VOLT', '_12', 'HI', 'LO']
 FAULT_LABELS = ['L. CELL', 'CURRENT', 'PACK', 'THERM']
+CUSTOM_FLAG_INDICES = {
+        0: 'Low Cell Voltage Fault',
+        1: 'Current Sensor Fault',
+        2: 'Pack Voltage Sensor Fault',
+        3: 'Thermistor Fault'
+    }
 
 ID = 43  # Message 02B
 db = cantools.database.load_file(DBC_FILE)
@@ -101,14 +107,7 @@ def create_display_window():
         faultFields[FAULTS[i]] = fault_label
     
 
-    customFlagIndices = {
-        0: 'Low Cell Voltage Fault',
-        1: 'Current Sensor Fault',
-        2: 'Pack Voltage Sensor Fault',
-        3: 'Thermistor Fault'
-    }
 
-    
     
     def update_camera():
         # Create a black image (480x640)
@@ -130,16 +129,16 @@ def create_display_window():
             for param, label in fields.items():
                 if param in decoded_msg:
                     value = decoded_msg[param]
-                    label.config(text=f"{value}")
+                    label.config(text=f"{value:.1f}")
                     label.update_idletasks()
 
-            if 'CustomFlag' in decoded_msg:
-                bits = BitArray(decoded_msg['CustomFlag'].to_bytes()).bin
-                for index in range(0, 4):
-                    label = faultFields[customFlagIndices[index]]
-                    value = "ERROR!" if bits[index] == '1' else ""
-                    label.config(text=f"{value}")
-                    label.update_idletasks()
+            # if 'CustomFlag' in decoded_msg:
+            #     bits = BitArray(decoded_msg['CustomFlag'].to_bytes()).bin
+            #     for index in range(0, 4):
+            #         label = faultFields[CUSTOM_FLAG_INDICES[index]]
+            #         value = "ERROR!" if bits[index] == '1' else ""
+            #         label.config(text=f"{value}")
+            #         label.update_idletasks()
 
         except Exception as e:
             print(f"Error decoding CAN message: {e}")
@@ -147,7 +146,7 @@ def create_display_window():
         root.after(2000, update_display)
 
     # Start updating UI elements
-    #update_display()
+    update_display()
     update_camera()
 
     root.mainloop()
