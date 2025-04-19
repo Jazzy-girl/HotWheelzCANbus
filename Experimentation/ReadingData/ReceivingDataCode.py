@@ -33,6 +33,7 @@ def simulate_can_data():
 
 # Create the main Tkinter window
 def create_display_window():
+    # the window
     root = tk.Tk()
     root.title("Car Monitoring System")
     root.geometry("800x480")  # Set the window size
@@ -52,9 +53,11 @@ def create_display_window():
     # speedometer.update_speed()  # Example to animate
 
     # Backup Camera Display
+    # the frame to hold the camera
     cam_frame = ttk.Frame(root)
     cam_frame.pack(pady=20)
 
+    # the label to hold 
     cam_label = ttk.Label(cam_frame, text="Backup Camera", font=("Arial", 16))
     cam_label.pack()
 
