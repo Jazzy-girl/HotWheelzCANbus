@@ -90,18 +90,24 @@ def create_display_window():
     output_font = tkFont.Font(family="Arial", size=15)
     fault_font = tkFont.Font(family="Arial", size=12)
 
+    # make separator line
+    line = Separator(data_frame, orient=VERTICAL).grid(column=1, columnspan=2, row=0, rowspan=10, sticky=NS)
+
     # make data name & output labels
     for i in range(len(DATA_LABELS)):
         data_frame.rowconfigure(i, weight=1)
         # row will will jump by 2 every other label.
         row = (i // 2) * 2
         # col will either be 0 or 1
-        col = i % 2
+        if(i % 2 == 0):
+            col = 0
+        else:
+            col = 3
 
         data_label = Label(data_frame, text=DATA_LABELS[i], font=data_font, justify=CENTER)
         data_label.grid(row=row, column=col, sticky=NSEW)
 
-        output_label = Label(data_frame, text="DEFAULT", font=output_font, justify=CENTER)
+        output_label = Label(data_frame, text="NULL", font=output_font, justify=CENTER)
         output_label.grid(row=row+1, column=col,sticky=NSEW, pady=(5,10))
 
         # for accessing DBC data
@@ -111,7 +117,10 @@ def create_display_window():
     for i in range(len(FAULT_LABELS)):
         fault_label = Label(data_frame, text=FAULT_LABELS[i], font=fault_font, justify=CENTER)
         row = ((i + len(DATA_LABELS)) // 2) * 2
-        col = i % 2
+        if(i % 2 == 0):
+            col = 0
+        else:
+            col = 3
         fault_label.grid(row=row, column=col, sticky=NSEW, pady=20)
         faultFields[FAULTS[i]] = fault_label
     
