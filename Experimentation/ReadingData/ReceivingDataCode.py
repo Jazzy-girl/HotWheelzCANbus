@@ -51,6 +51,16 @@ def create_display_window():
     # speedometer = Speedometer(root, width=800, height=480)
     # speedometer.update_speed()  # Example to animate
 
+    # Backup Camera Display
+    cam_frame = ttk.Frame(root)
+    cam_frame.pack(pady=20)
+
+    cam_label = ttk.Label(cam_frame, text="Backup Camera", font=("Arial", 16))
+    cam_label.pack()
+
+    video_label = tk.Label(cam_frame)
+    video_label.pack()
+
     # Define parameters to display (now aligned with the actual DBC signal names)
     parameters = ['PackSOC', 'PackCurrent', 'PackInstVoltage', 'HighTemp', 'LowTemp', '_12vSupply']
     fields = {}
@@ -129,6 +139,7 @@ def create_display_window():
 
     # Start updating UI elements
     update_display()
+    update_camera()
 
     root.mainloop()
 
