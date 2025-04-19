@@ -4,6 +4,7 @@ import cantools
 import random
 from tkinter import *
 from tkinter.ttk import *
+import tkinter.font as tkFont
 import PIL.Image, PIL.ImageTk  # For displaying images in Tkinter
 import sys
 
@@ -36,6 +37,7 @@ CUSTOM_FLAG_INDICES = {
         2: 'Pack Voltage Sensor Fault',
         3: 'Thermistor Fault'
     }
+
 
 ID = 43  # Message 02B
 db = cantools.database.load_file(DBC_FILE)
@@ -81,33 +83,37 @@ def create_display_window():
 
     fields = {}
     faultFields = {}
+    data_frame.columnconfigure(0, weight=1)
+    data_frame.columnconfigure(1, weight=1)
+
+    data_font = tkFont.Font(family="Arial", size=15)
+    output_font = tkFont.Font(family="Arial", size=15)
+    fault_font = tkFont.Font(family="Arial", size=12)
 
     # make data name & output labels
     for i in range(len(DATA_LABELS)):
+        data_frame.rowconfigure(i, weight=1)
         # row will will jump by 2 every other label.
         row = (i // 2) * 2
         # col will either be 0 or 1
         col = i % 2
 
-        data_label = Label(data_frame, text=DATA_LABELS[i])
-        data_label.grid(row=row, column=col)
+        data_label = Label(data_frame, text=DATA_LABELS[i], font=data_font, justify=CENTER)
+        data_label.grid(row=row, column=col, sticky=NSEW)
 
-        output_label = Label(data_frame, text="DEFAULT")
-        output_label.grid(row=row+1, column=col)
+        output_label = Label(data_frame, text="DEFAULT", font=output_font, justify=CENTER)
+        output_label.grid(row=row+1, column=col,sticky=NSEW, pady=(5,10))
 
         # for accessing DBC data
         fields[PARAMETERS[i]] = output_label
 
     # make fault labels
     for i in range(len(FAULT_LABELS)):
-        fault_label = Label(data_frame, text=FAULT_LABELS[i])
+        fault_label = Label(data_frame, text=FAULT_LABELS[i], font=fault_font, justify=CENTER)
         row = ((i + len(DATA_LABELS)) // 2) * 2
         col = i % 2
-        fault_label.grid(row=row, column=col)
+        fault_label.grid(row=row, column=col, sticky=NSEW, pady=20)
         faultFields[FAULTS[i]] = fault_label
-    
-
-
     
     def update_camera():
         # Create a black image (480x640)
@@ -129,7 +135,7 @@ def create_display_window():
             for param, label in fields.items():
                 if param in decoded_msg:
                     value = decoded_msg[param]
-                    label.config(text=f"{value:.1f}")
+                    label.configure(text=f"{value:.1f}", font=output_font)
                     label.update_idletasks()
 
             # if 'CustomFlag' in decoded_msg:
