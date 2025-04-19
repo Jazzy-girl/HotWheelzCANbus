@@ -1,23 +1,20 @@
-import tkinter as tk
+from tkinter import *
 
-def hide_label():
-    my_label.pack_forget()
+root=Tk()
 
-def show_label():
-    my_label.pack()
+Grid.rowconfigure(root, 0, weight=1)
+Grid.columnconfigure(root, 0, weight=1)
+Grid.rowconfigure(root, 1, weight=1)
+Grid.columnconfigure(root, 1, weight=1)
 
-root = tk.Tk()
+buttonRed = Button(root, bg="red")
+buttonGreen =Button(root, bg="green")
+buttonBlue = Button(root, bg="blue")
+buttonYellow = Button(root, bg="yellow")
 
-my_label = tk.Label(root, text="This is a label")
-my_label.pack()
-
-my_label2 = tk.Label(root, text="This is a label2")
-my_label2.pack()
-
-hide_button = tk.Button(root, text="Hide Label", command=hide_label)
-hide_button.pack()
-
-show_button = tk.Button(root, text="Show Label", command=show_label)
-show_button.pack()
+buttonRed.grid(row=0, column=0, sticky='NSEW')
+buttonGreen.grid(row=0, column=1, sticky='NSEW')
+buttonBlue.grid(row= 1, column = 0, sticky='NSEW')
+buttonYellow.grid(row=1, column=1, sticky='NSEW')
 
 root.mainloop()

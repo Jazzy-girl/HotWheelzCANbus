@@ -38,6 +38,7 @@ CUSTOM_FLAG_INDICES = {
         3: 'Thermistor Fault'
     }
 
+CAMERA_RATIO = (480, 500) # originally 480 x 640
 
 ID = 43  # Message 02B
 db = cantools.database.load_file(DBC_FILE)
@@ -70,7 +71,7 @@ def create_display_window():
 
     # Data Frame
     data_frame = Frame(root)
-    data_frame.pack(side=LEFT)
+    data_frame.pack(side=LEFT, expand=True, fill=BOTH)
 
     """
     This section makes the grid. There are 3 types of labels:
@@ -85,6 +86,10 @@ def create_display_window():
     faultFields = {}
     data_frame.columnconfigure(0, weight=1)
     data_frame.columnconfigure(1, weight=1)
+    data_frame.columnconfigure(2, weight=1)
+    data_frame.columnconfigure(3, weight=1)
+    for i in range(len(DATA_LABELS)*2 + len(FAULT_LABELS)):
+        data_frame.rowconfigure(i, weight=1)
 
     data_font = tkFont.Font(family="Arial", size=15)
     output_font = tkFont.Font(family="Arial", size=15)
@@ -95,7 +100,6 @@ def create_display_window():
 
     # make data name & output labels
     for i in range(len(DATA_LABELS)):
-        data_frame.rowconfigure(i, weight=1)
         # row will will jump by 2 every other label.
         row = (i // 2) * 2
         # col will either be 0 or 1
@@ -104,11 +108,11 @@ def create_display_window():
         else:
             col = 3
 
-        data_label = Label(data_frame, text=DATA_LABELS[i], font=data_font, justify=CENTER)
-        data_label.grid(row=row, column=col, sticky=NSEW)
+        data_label = Label(data_frame, text=DATA_LABELS[i], font=data_font, justify=CENTER, background="white")
+        data_label.grid(row=row, column=col, sticky='NSEW')
 
         output_label = Label(data_frame, text="NULL", font=output_font, justify=CENTER)
-        output_label.grid(row=row+1, column=col,sticky=NSEW, pady=(5,10))
+        output_label.grid(row=row+1, column=col, sticky='NSEW', pady=(5,10))
 
         # for accessing DBC data
         fields[PARAMETERS[i]] = output_label
@@ -126,7 +130,7 @@ def create_display_window():
     
     def update_camera():
         # Create a black image (480x640)
-        frame = cv2.UMat(480, 640, cv2.CV_8UC3)  # Create a black image
+        frame = cv2.UMat(CAMERA_RATIO[0], CAMERA_RATIO[1], cv2.CV_8UC3)  # Create a black image
         img = PIL.Image.fromarray(frame.get())  # Convert it to PIL image
         img_tk = PIL.ImageTk.PhotoImage(image=img)  # Convert to Tkinter-compatible image
 
