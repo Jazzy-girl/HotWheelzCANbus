@@ -181,13 +181,14 @@ def create_display_window():
                     label.configure(text=f"{value:.1f}", font=output_font)
                     label.update_idletasks()
 
-            # if 'CustomFlag' in decoded_msg:
-            #     bits = BitArray(decoded_msg['CustomFlag'].to_bytes()).bin
-            #     for index in range(0, 4):
-            #         label = faultFields[CUSTOM_FLAG_INDICES[index]]
-            #         value = "ERROR!" if bits[index] == '1' else ""
-            #         label.config(text=f"{value}")
-            #         label.update_idletasks()
+            if 'CustomFlag' in decoded_msg:
+                bits = BitArray(decoded_msg['CustomFlag'].to_bytes()).bin
+                for index in range(0, 4):
+                    label = faultFields[CUSTOM_FLAG_INDICES[index]]
+                    label.config(foreground="black")
+                    if bits[index] == '1':
+                        label.config(foreground="red")
+                    label.update_idletasks()
 
         except Exception as e:
             print(f"Error decoding CAN message: {e}")
