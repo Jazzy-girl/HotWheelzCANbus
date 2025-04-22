@@ -46,7 +46,7 @@ CUSTOM_FLAG_INDICES = {
 
 CAMERA_RATIO = (480, 500) # originally 480 x 640
 
-ID = 43  # Message 02B
+ID = [43, 44]  # Message 02B, 02C
 db = cantools.database.load_file(DBC_FILE)
 
 def get_bms_data():
@@ -58,7 +58,7 @@ def get_bms_data():
 # Simulate CANbus messages (for testing)
 def simulate_can_data():
     return {
-        'arbitration_id': ID,
+        'arbitration_id': ID[random.randint(0, 1)],
         'data': bytearray([random.randint(0, 255) for _ in range(8)])  # Simulated 8-byte CAN message
     }
 
