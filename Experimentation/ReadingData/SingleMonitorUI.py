@@ -69,23 +69,28 @@ def create_display_window():
     root.title("Car Monitoring System")
     root.geometry("800x480")  # Set the window size
 
-    # Load the background image
+    # background img attempt # 2
+    # bg_image = PIL.ImageTk.PhotoImage(PIL.Image.open(BG_IMAGE))
+    # bg_label = Label(root, image=bg_image)
+    # bg_label.place(x=0,y=0, relwidth=1, relheight=1)
+
+    # # Load the background image
     # bg_image = PIL.Image.open(BG_IMAGE)
     # bg_image = bg_image.resize((800, 480))  # Resize to window size
     # bg_image_tk = PIL.ImageTk.PhotoImage(bg_image)
 
-    # bg_label = Label(root, image=bg_image_tk)
-    # bg_label.image = bg_image_tk
-    # bg_label.place(x=0,y=0, relwidth=1, relheight=1)
+    # # bg_label = Label(root, image=bg_image_tk)
+    # # bg_label.image = bg_image_tk
+    # # bg_label.place(x=0,y=0, relwidth=1, relheight=1)
 
     # canvas = Canvas(root)
     # canvas.pack()
 
     # canvas.bg_image_tk = bg_image_tk
     # canvas.create_image(0, 0, image=bg_image_tk, anchor=NW)
-    # canvas.lower()
+    # # canvas.lower()
 
-    # Create a label to hold the background image and ensure it persists
+    # # Create a label to hold the background image and ensure it persists
     # bg_label = Label(root, image=bg_image_tk)
     # bg_label.image = bg_image_tk  # Keep a reference to the image
     # bg_label.place(x=0, y=0, relwidth=1, relheight=1)  # Ensure it takes up the whole screen
@@ -93,10 +98,10 @@ def create_display_window():
     # Backup Camera Display: Frame
     # the frame to hold the camera
     cam_frame = Frame(root)
-    cam_frame.pack(side=LEFT, pady=20)
+    cam_frame.pack(side=LEFT, pady=20, expand=True)
 
     video_label = Label(cam_frame)
-    video_label.pack()
+    video_label.pack(expand=True)
 
     # Data Frame
     data_frame = Frame(root)
@@ -137,10 +142,10 @@ def create_display_window():
         else:
             col = 3
 
-        data_label = Label(data_frame, text=DATA_LABELS[i], font=data_font, justify=CENTER, background="white")
+        data_label = Label(data_frame, text=DATA_LABELS[i], font=data_font, justify=CENTER, background="black", foreground="white")
         data_label.grid(row=row, column=col, sticky='NSEW')
 
-        output_label = Label(data_frame, text="NULL", font=output_font, justify=CENTER)
+        output_label = Label(data_frame, text="NULL", font=output_font, justify=CENTER, background="black", foreground="white")
         output_label.grid(row=row+1, column=col, sticky='NSEW', pady=(5,10))
 
         # for accessing DBC data
@@ -148,7 +153,7 @@ def create_display_window():
 
     # make fault labels
     for i in range(len(FAULT_LABELS)):
-        fault_label = Label(data_frame, text=FAULT_LABELS[i], font=fault_font, justify=CENTER)
+        fault_label = Label(data_frame, text=FAULT_LABELS[i], font=fault_font, justify=CENTER, background="black", foreground="white")
         row = ((i + len(DATA_LABELS)) // 2) * 2
         if(i % 2 == 0):
             col = 0
@@ -185,7 +190,7 @@ def create_display_window():
                 bits = BitArray(decoded_msg['CustomFlag'].to_bytes()).bin
                 for index in range(0, 4):
                     label = faultFields[CUSTOM_FLAG_INDICES[index]]
-                    label.config(foreground="black")
+                    label.config(foreground="white")
                     if bits[index] == '1':
                         label.config(foreground="red")
                     label.update_idletasks()
