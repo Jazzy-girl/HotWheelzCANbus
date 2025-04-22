@@ -19,6 +19,9 @@ from Speedometer import Speedometer
 """
 Single-Window UI to display 6 data fields, 4 possible faults, and the backup camera.
 Uses tkinter's .grid() layout.
+
+The 6 data fields each have a limit of 1 decimal place.
+The 4 faults turn red when true and black when false.
 """
 
 # Load the CAN database
@@ -167,7 +170,8 @@ def create_display_window():
 
     # Function to update display fields
     def update_display():
-        message = simulate_can_data()
+        message = simulate_can_data() # Use to simulate BMS data when not actually accessing BMS data
+        # message = get_bms_data() # Use to actually access the BMS data
         try:
             decoded_msg = db.decode_message(message['arbitration_id'], message['data'])
 
