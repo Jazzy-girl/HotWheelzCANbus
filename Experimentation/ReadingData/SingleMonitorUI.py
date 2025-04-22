@@ -92,10 +92,6 @@ def create_display_window():
     cam_frame = Frame(root)
     cam_frame.pack(side=LEFT, pady=20)
 
-    # the label to hold 
-    cam_label = Label(cam_frame, text="Backup Camera", font=("Arial", 16))
-    cam_label.pack()
-
     video_label = Label(cam_frame)
     video_label.pack()
 
