@@ -3,7 +3,7 @@ from bitstring import BitArray
 from cantools import *
 from can import *
 import random
-from tkinter import *
+import tkinter as tk
 from tkinter.ttk import *
 import tkinter.font as tkFont
 import PIL.Image, PIL.ImageTk  # For displaying images in Tkinter
@@ -65,7 +65,7 @@ def simulate_can_data():
 # Create the main Tkinter window
 def create_display_window():
     # the window
-    root = Tk()
+    root = tk.Tk()
     root.title("Car Monitoring System")
     root.geometry("800x480")  # Set the window size
 
@@ -97,15 +97,15 @@ def create_display_window():
 
     # Backup Camera Display: Frame
     # the frame to hold the camera
-    cam_frame = Frame(root)
-    cam_frame.pack(side=LEFT, pady=20, expand=True)
+    cam_frame = tk.Frame(root, background="black")
+    cam_frame.pack(side=tk.LEFT, pady=20, expand=True)
 
     video_label = Label(cam_frame)
     video_label.pack(expand=True)
 
     # Data Frame
-    data_frame = Frame(root)
-    data_frame.pack(side=LEFT, expand=True, fill=BOTH)
+    data_frame = tk.Frame(root, background="black")
+    data_frame.pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
 
     """
     This section makes the grid. There are 3 types of labels:
@@ -130,7 +130,7 @@ def create_display_window():
     fault_font = tkFont.Font(family="Arial", size=20)
 
     # make separator line
-    line = Separator(data_frame, orient=VERTICAL).grid(column=1, columnspan=2, row=0, rowspan=10, sticky=NS)
+    line = Separator(data_frame, orient=tk.VERTICAL).grid(column=1, columnspan=2, row=0, rowspan=10, sticky=tk.NS)
 
     # make data name & output labels
     for i in range(len(DATA_LABELS)):
@@ -142,10 +142,10 @@ def create_display_window():
         else:
             col = 3
 
-        data_label = Label(data_frame, text=DATA_LABELS[i], font=data_font, justify=CENTER, background="black", foreground="white")
+        data_label = Label(data_frame, text=DATA_LABELS[i], font=data_font, justify=tk.CENTER, background="black", foreground="white")
         data_label.grid(row=row, column=col, sticky='NSEW')
 
-        output_label = Label(data_frame, text="NULL", font=output_font, justify=CENTER, background="black", foreground="white")
+        output_label = Label(data_frame, text="NULL", font=output_font, justify=tk.CENTER, background="black", foreground="white")
         output_label.grid(row=row+1, column=col, sticky='NSEW', pady=(5,10))
 
         # for accessing DBC data
@@ -153,13 +153,13 @@ def create_display_window():
 
     # make fault labels
     for i in range(len(FAULT_LABELS)):
-        fault_label = Label(data_frame, text=FAULT_LABELS[i], font=fault_font, justify=CENTER, background="black", foreground="white")
+        fault_label = Label(data_frame, text=FAULT_LABELS[i], font=fault_font, justify=tk.CENTER, background="black", foreground="white")
         row = ((i + len(DATA_LABELS)) // 2) * 2
         if(i % 2 == 0):
             col = 0
         else:
             col = 3
-        fault_label.grid(row=row, column=col, sticky=NSEW, pady=20)
+        fault_label.grid(row=row, column=col, sticky=tk.NSEW, pady=20)
         faultFields[FAULTS[i]] = fault_label
     
     def update_camera():
