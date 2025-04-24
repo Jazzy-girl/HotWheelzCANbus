@@ -137,10 +137,7 @@ def create_display_window():
         # row will will jump by 2 every other label.
         row = (i // 2) * 2
         # col will either be 0 or 1
-        if(i % 2 == 0):
-            col = 0
-        else:
-            col = 3
+        col = (i % 2) * 3
 
         data_label = Label(data_frame, text=DATA_LABELS[i], font=data_font, background="black", foreground="white")
         data_label.grid(row=row, column=col, sticky='')
@@ -155,10 +152,7 @@ def create_display_window():
     for i in range(len(FAULT_LABELS)):
         fault_label = Label(data_frame, text=FAULT_LABELS[i], font=fault_font, justify=tk.CENTER, background="black", foreground="white")
         row = ((i + len(DATA_LABELS)) // 2) * 2
-        if(i % 2 == 0):
-            col = 0
-        else:
-            col = 3
+        col = (i % 2) * 3
         fault_label.grid(row=row, column=col, sticky='', pady=20)
         faultFields[FAULTS[i]] = fault_label
     
