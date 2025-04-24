@@ -123,10 +123,10 @@ def create_display_window():
     data_frame.columnconfigure(2, weight=1)
     data_frame.columnconfigure(3, weight=1)
     for i in range(len(DATA_LABELS)*2 + len(FAULT_LABELS)):
-        data_frame.rowconfigure(i, weight=1)
+        data_frame.rowconfigure(i, weight=1, minsize=0)
 
     data_font = tkFont.Font(family="Arial", size=20)
-    output_font = tkFont.Font(family="Arial", size=20)
+    output_font = tkFont.Font(family="Arial", size=25)
     fault_font = tkFont.Font(family="Arial", size=20)
 
     # make separator line
@@ -142,11 +142,11 @@ def create_display_window():
         else:
             col = 3
 
-        data_label = Label(data_frame, text=DATA_LABELS[i], font=data_font, justify=tk.CENTER, background="black", foreground="white")
-        data_label.grid(row=row, column=col, sticky='NSEW')
+        data_label = Label(data_frame, text=DATA_LABELS[i], font=data_font, background="black", foreground="white")
+        data_label.grid(row=row, column=col, sticky='')
 
-        output_label = Label(data_frame, text="NULL", font=output_font, justify=tk.CENTER, background="black", foreground="white")
-        output_label.grid(row=row+1, column=col, sticky='NSEW', pady=(5,10))
+        output_label = Label(data_frame, text="NULL", font=output_font, background="black", foreground="white")
+        output_label.grid(row=row+1, column=col, sticky='', pady=(0,10))
 
         # for accessing DBC data
         fields[PARAMETERS[i]] = output_label
