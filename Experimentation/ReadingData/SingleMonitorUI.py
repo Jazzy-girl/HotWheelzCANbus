@@ -16,7 +16,7 @@ try:
     from picamera2 import Picamera2
 except ImportError:
     print("Running on nonRPI system - camera not available.")
-import cv2
+# import cv2
 sys.path.append('/Users/divnamijic/Documents/HotWheelzCANbus-4/UI')
 from Speedometer import Speedometer
 
@@ -30,12 +30,12 @@ The 4 faults turn red when true and black when false.
 """
 
 # Load the CAN database
-#DBC_FILE = '/Users/divnamijic/Documents/HotWheelzCANbus-4/Experimentation/DBC Data/LATEST_DBC.dbc'
-#SIM_DATA_FILE = '/Users/divnamijic/Documents/HotWheelzCANbus-4/Experimentation/ReadingData/TestData/CANData1/LATEST_DATA.txt'
-#BG_IMAGE = "/Users/divnamijic/Documents/HotWheelzCANbus-4/Experimentation/ReadingData/Resources/images/bg.jpg"
-DBC_FILE = 'Experimentation/DBC Data/LATEST_DBC.dbc'
-SIM_DATA_FILE = 'Experimentation/ReadingData/TestData/CANData1/LATEST_DATA.txt'
-BG_IMAGE = 'Experimentation/ReadingData/Resources/images/bg.jpg'
+DBC_FILE = '/Users/divnamijic/Documents/HotWheelzCANbus-4/Experimentation/DBC Data/LATEST_DBC.dbc'
+SIM_DATA_FILE = '/Users/divnamijic/Documents/HotWheelzCANbus-4/Experimentation/ReadingData/TestData/CANData1/LATEST_DATA.txt'
+BG_IMAGE = "/Users/divnamijic/Documents/HotWheelzCANbus-4/Experimentation/ReadingData/Resources/images/bg.jpg"
+# DBC_FILE = 'Experimentation/DBC Data/LATEST_DBC.dbc'
+# SIM_DATA_FILE = 'Experimentation/ReadingData/TestData/CANData1/LATEST_DATA.txt'
+# BG_IMAGE = 'Experimentation/ReadingData/Resources/images/bg.jpg'
 VALID_IDs = ['02B', '02C']
 
 PARAMETERS = ['PackSOC', 'PackCurrent', 'PackInstVoltage', 'HighTemp', 'LowTemp', '_12vSupply']
@@ -178,6 +178,7 @@ def create_display_window():
         # video_label.config(image=img_tk)  # Update the label to show the image
         try:
             image = PIL.Image.fromarray(camera.capture_array())
+            image = image.resize((400, 480))
             img_tk = PIL.ImageTk.PhotoImage(image)
 
             video_label.img_tk = img_tk
