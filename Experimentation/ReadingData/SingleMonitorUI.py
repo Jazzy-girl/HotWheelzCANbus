@@ -11,6 +11,11 @@ import sys
 
 import cantools
 import can
+from time import sleep
+try:
+    from picamera2 import Picamera2
+except ImportError:
+    print("Running on nonRPI system - camera not available.")
 import cv2
 sys.path.append('/Users/divnamijic/Documents/HotWheelzCANbus-4/UI')
 from Speedometer import Speedometer
@@ -103,6 +108,12 @@ def create_display_window():
     video_label = Label(cam_frame, background="black")
     video_label.pack(expand=True)
 
+    try:
+        camera = Picamera2()
+        camera.start_preview()
+    except:
+        camera = None
+
     # Data Frame
     data_frame = tk.Frame(root, background="black")
     data_frame.pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
@@ -115,6 +126,7 @@ def create_display_window():
     
     The grid is 8 x 2
     """
+
 
     fields = {}
     faultFields = {}
@@ -158,14 +170,21 @@ def create_display_window():
     
     def update_camera():
         # Create a black image (480x640)
-        frame = cv2.UMat(CAMERA_RATIO[0], CAMERA_RATIO[1], cv2.CV_8UC3)  # Create a black image
-        img = PIL.Image.fromarray(frame.get())  # Convert it to PIL image
-        img_tk = PIL.ImageTk.PhotoImage(image=img)  # Convert to Tkinter-compatible image
+        # frame = cv2.UMat(CAMERA_RATIO[0], CAMERA_RATIO[1], cv2.CV_8UC3)  # Create a black image
+        # img = PIL.Image.fromarray(frame.get())  # Convert it to PIL image
+        # img_tk = PIL.ImageTk.PhotoImage(image=img)  # Convert to Tkinter-compatible image
 
-        video_label.img_tk = img_tk  # Keep reference to avoid garbage collection
-        video_label.config(image=img_tk)  # Update the label to show the image
+        # video_label.img_tk = img_tk  # Keep reference to avoid garbage collection
+        # video_label.config(image=img_tk)  # Update the label to show the image
+        try:
+            image = PIL.Image.fromarray(camera.capture_array())
+            img_tk = PIL.ImageTk.PhotoImage(image)
 
-        root.after(50, update_camera)  # Refresh every 50ms
+            video_label.img_tk = img_tk
+            video_label.config(image=img_tk) #Update label
+        except:
+            pass
+        root.after(200, update_camera)  # Refresh every 50ms
 
     # Function to update display fields
     def update_display():
