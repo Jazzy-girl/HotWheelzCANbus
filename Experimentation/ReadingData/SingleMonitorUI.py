@@ -98,9 +98,9 @@ def create_display_window():
     # Backup Camera Display: Frame
     # the frame to hold the camera
     cam_frame = tk.Frame(root, background="black")
-    cam_frame.pack(side=tk.LEFT, pady=20, expand=True)
+    cam_frame.pack(side=tk.LEFT, expand=True)
 
-    video_label = Label(cam_frame)
+    video_label = Label(cam_frame, background="black")
     video_label.pack(expand=True)
 
     # Data Frame
@@ -130,7 +130,7 @@ def create_display_window():
     fault_font = tkFont.Font(family="Arial", size=20)
 
     # make separator line
-    line = Separator(data_frame, orient=tk.VERTICAL).grid(column=1, columnspan=2, row=0, rowspan=10, sticky=tk.NS)
+    line = Separator(data_frame, orient=tk.VERTICAL).grid(column=1, columnspan=2, row=0, rowspan=10, sticky='NS')
 
     # make data name & output labels
     for i in range(len(DATA_LABELS)):
@@ -159,7 +159,7 @@ def create_display_window():
             col = 0
         else:
             col = 3
-        fault_label.grid(row=row, column=col, sticky=tk.NSEW, pady=20)
+        fault_label.grid(row=row, column=col, sticky='', pady=20)
         faultFields[FAULTS[i]] = fault_label
     
     def update_camera():
