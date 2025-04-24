@@ -118,7 +118,7 @@ def create_display_window():
                 video_label.config(image=img_tk)
             except Exception as e:
                 print(f"Camera frame error: {e}")
-        root.after(200, update_camera)
+        root.after(5, update_camera)
 
     def update_display():
         message = simulate_can_data()
