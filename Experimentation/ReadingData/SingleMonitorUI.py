@@ -21,6 +21,8 @@ except ImportError:
 sys.path.append('/Users/divnamijic/Documents/HotWheelzCANbus-4/UI')
 from Speedometer import Speedometer
 
+
+
 DBC_FILE = '/home/pi/HotWheelz/HotWheelzCANbus/Experimentation/DBC Data/LATEST_DBC.dbc'
 SIM_DATA_FILE = '/home/pi/HotWheelz/HotWheelzCANbus/Experimentation/ReadingData/TestData/CANData1/LATEST_DATA.txt'
 BG_IMAGE = "/home/pi/HotWheelz/HotWheelzCANbus/Experimentation/ReadingData/Resources/images/bg.jpg"
@@ -84,7 +86,8 @@ def create_display_window():
     faultFields = {}
     for i in range(len(DATA_LABELS)*2 + len(FAULT_LABELS)):
         data_frame.rowconfigure(i, weight=1)
-
+    data_frame.columnconfigure(0, weight=1)
+    data_frame.columnconfigure(3, weight=1)
     data_font = tkFont.Font(family="Arial", size=20)
     output_font = tkFont.Font(family="Arial", size=25)
     fault_font = tkFont.Font(family="Arial", size=20)
