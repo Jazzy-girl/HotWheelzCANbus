@@ -8,7 +8,7 @@ from tkinter.ttk import *
 import tkinter.font as tkFont
 import PIL.Image, PIL.ImageTk
 import sys
-
+import math
 import cantools
 import can
 from time import sleep
@@ -21,11 +21,13 @@ except ImportError:
 sys.path.append('/Users/divnamijic/Documents/HotWheelzCANbus-4/UI')
 from Speedometer import Speedometer
 
+DBC_FILE = 'Experimentation/DBC Data/LATEST_DBC.dbc'
+SIM_DATA_FILE = 'Experimentation/ReadingData/TestData/CANData1/LATEST_DATA.txt'
+BG_IMAGE = "Experimentation/ReadingData/Resources/images/bg.jpg"
 
-
-DBC_FILE = '/home/pi/HotWheelz/HotWheelzCANbus/Experimentation/DBC Data/LATEST_DBC.dbc'
-SIM_DATA_FILE = '/home/pi/HotWheelz/HotWheelzCANbus/Experimentation/ReadingData/TestData/CANData1/LATEST_DATA.txt'
-BG_IMAGE = "/home/pi/HotWheelz/HotWheelzCANbus/Experimentation/ReadingData/Resources/images/bg.jpg"
+# DBC_FILE = '/home/pi/HotWheelz/HotWheelzCANbus/Experimentation/DBC Data/LATEST_DBC.dbc'
+# SIM_DATA_FILE = '/home/pi/HotWheelz/HotWheelzCANbus/Experimentation/ReadingData/TestData/CANData1/LATEST_DATA.txt'
+# BG_IMAGE = "/home/pi/HotWheelz/HotWheelzCANbus/Experimentation/ReadingData/Resources/images/bg.jpg"
 
 VALID_IDs = ['02B', '02C']
 
@@ -92,10 +94,18 @@ def create_display_window():
     output_font = tkFont.Font(family="Arial", size=25)
     fault_font = tkFont.Font(family="Arial", size=20)
 
-    Separator(data_frame, orient=tk.VERTICAL).grid(column=1, columnspan=2, row=0, rowspan=10, sticky='NS')
+    Separator(data_frame, orient=tk.VERTICAL).grid(column=1, columnspan=2, row=0, rowspan=12, sticky='NS')
+    Separator(data_frame, orient=tk.HORIZONTAL).grid(column=0, columnspan=4, row=2, rowspan=1, sticky='EW')
+    Separator(data_frame, orient=tk.HORIZONTAL).grid(column=0, columnspan=4, row=5, rowspan=1, sticky='EW')
+    Separator(data_frame, orient=tk.HORIZONTAL).grid(column=0, columnspan=4, row=8, rowspan=1, sticky='EW')
 
     for i in range(len(DATA_LABELS)):
         row = (i // 2) * 2
+        if(i>1):
+            row += 1
+            if(i>3):
+                row += 1
+        # row = math.floor(((i/2) + (math.sqrt(i)/2)))
         col = (i % 2) * 3
         data_label = Label(data_frame, text=DATA_LABELS[i], font=data_font, background="black", foreground="white")
         data_label.grid(row=row, column=col)
@@ -104,7 +114,7 @@ def create_display_window():
         fields[PARAMETERS[i]] = output_label
 
     for i in range(len(FAULT_LABELS)):
-        row = ((i + len(DATA_LABELS)) // 2) * 2
+        row = ((i + len(DATA_LABELS)) // 2) * 2 + 3
         col = (i % 2) * 3
         fault_label = Label(data_frame, text=FAULT_LABELS[i], font=fault_font, background="black", foreground="white")
         fault_label.grid(row=row, column=col, pady=20)
