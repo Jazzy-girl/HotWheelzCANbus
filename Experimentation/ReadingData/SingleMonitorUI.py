@@ -94,10 +94,11 @@ def create_display_window():
     output_font = tkFont.Font(family="Arial", size=25)
     fault_font = tkFont.Font(family="Arial", size=20)
 
-    Separator(data_frame, orient=tk.VERTICAL).grid(column=1, columnspan=2, row=0, rowspan=12, sticky='NS')
+    Separator(data_frame, orient=tk.VERTICAL).grid(column=1, columnspan=2, row=0, rowspan=13, sticky='NS')
     Separator(data_frame, orient=tk.HORIZONTAL).grid(column=0, columnspan=4, row=2, rowspan=1, sticky='EW')
     Separator(data_frame, orient=tk.HORIZONTAL).grid(column=0, columnspan=4, row=5, rowspan=1, sticky='EW')
     Separator(data_frame, orient=tk.HORIZONTAL).grid(column=0, columnspan=4, row=8, rowspan=1, sticky='EW')
+    Separator(data_frame, orient=tk.HORIZONTAL).grid(column=0, columnspan=4, row=10, rowspan=1, sticky='EW')
 
     for i in range(len(DATA_LABELS)):
         row = (i // 2) * 2
@@ -115,6 +116,8 @@ def create_display_window():
 
     for i in range(len(FAULT_LABELS)):
         row = ((i + len(DATA_LABELS)) // 2) * 2 + 3
+        if(i>1):
+            row+=1
         col = (i % 2) * 3
         fault_label = Label(data_frame, text=FAULT_LABELS[i], font=fault_font, background="black", foreground="white")
         fault_label.grid(row=row, column=col, pady=20)
