@@ -109,9 +109,9 @@ def create_display_window():
         # row = math.floor(((i/2) + (math.sqrt(i)/2)))
         col = (i % 2) * 3
         data_label = Label(data_frame, text=DATA_LABELS[i], font=data_font, background="black", foreground="white")
-        data_label.grid(row=row, column=col)
+        data_label.grid(row=row, column=col, pady=(10,0))
         output_label = Label(data_frame, text="NULL", font=output_font, background="black", foreground="white")
-        output_label.grid(row=row+1, column=col, pady=(0,10))
+        output_label.grid(row=row+1, column=col)
         fields[PARAMETERS[i]] = output_label
 
     for i in range(len(FAULT_LABELS)):
