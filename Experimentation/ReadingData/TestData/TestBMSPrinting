@@ -1,0 +1,70 @@
+import cantools
+import cantools.database
+import can
+from time import sleep
+import serial
+
+DBC_FILE = 'Experimentation/DBC Data/LATEST_DBC.dbc'
+SIM_DATA_FILE = 'Experimentation/ReadingData/TestData/CANData1/LATEST_DATA.txt'
+BG_IMAGE = "Experimentation/ReadingData/Resources/images/bg.jpg"
+# CAMERA_RATIO = (480, 480)
+ID = [43, 44]  # Message 02B, 02C
+db = cantools.database.load_file(DBC_FILE)
+
+ser = serial.Serial(
+    port='COM4',
+    baudrate=115200,
+    timeout=1
+)
+ser.write(b'S8\r')
+print("first write")
+sleep(0.1)
+ser.write(b'O\r')
+print("second write")
+sleep(0.1)
+buffer = ""
+
+def parse_can_message(msg):
+    if not msg.startswith('t'):
+        return None
+    try:
+        can_id = int(msg[1:4], 16)
+        dlc = int(msg[4])
+        data = [int(msg[i:i+2], 16) for i in range(5, 5 + dlc * 2)]
+        return {
+            'can_id': can_id,
+            'dlc': dlc,
+            'data': data
+        }
+    except Exception as e:
+        print(f"FAILED TO PARSE: {e}")
+        return None
+
+try:
+    while True:
+        if ser.in_waiting:
+            line = ser.read(ser.in_waiting).decode('utf-8', errors='ignore').strip()
+            # line = repr(rawLine)
+            print(f"Raw: {line}")
+            # print(str(line))
+            try:
+                line = str(line)
+                hex_string = line[1:4]
+
+                can_id = int(hex_string, 16)
+                data = bytes.fromhex(line[5:])
+                try:
+                    msg = db.decode_message(can_id, data)
+                    print(msg)
+                except Exception as e:
+                    print(f"Message with ID {can_id} not found: {e}")
+            except Exception as e:
+                print(f"Another error! {e}")
+
+
+
+except Exception as e:
+    print(f"ERROR {e}")
+finally:
+    ser.write(b'C\r')
+    ser.close()

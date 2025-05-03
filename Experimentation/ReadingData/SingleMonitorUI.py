@@ -45,9 +45,11 @@ CUSTOM_FLAG_INDICES = {
 CAMERA_RATIO = (480, 480)
 ID = [43, 44]  # Message 02B, 02C
 db = cantools.database.load_file(DBC_FILE)
+# canBus = can.Bus()
 
 def get_bms_data():
     with can.Bus() as bus:
+        bus.recv()
         for msg in bus:
             print(msg.data)
 
@@ -137,6 +139,9 @@ def create_display_window():
         root.after(5, update_camera)
 
     def update_display():
+        # with can.Bus() as bus:
+        #     for message in bus:
+        # message = bus.recv()
         message = simulate_can_data()
         try:
             decoded_msg = db.decode_message(message['arbitration_id'], message['data'])
