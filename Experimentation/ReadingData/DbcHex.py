@@ -48,7 +48,6 @@ db = cantools.database.load_file(DBC_FILE)
 
 # Load data fike
 with open(SIM_DATA_FILE, 'r') as file:
-    i = 0
     for line in file:
         # Process each line
         # first letter is useless
@@ -58,26 +57,26 @@ with open(SIM_DATA_FILE, 'r') as file:
         hex_string = line[1:4]
         
         id = int(hex_string, 16)
-        i+=1
-        if(i == 10):
-            break
 
         if(hex_string in VALID_IDs):
             data = bytes.fromhex(line[5:])
             message = db.decode_message(id, data)
-            #print(f"Thermistor Temp: {message['ThermistorValue']} degrees Celsius")
-            for key in message.keys():
-                information[key] = message[key]
-                """
-                The following if statement converts the CustomFlag hex data into binary and checks
-                the first 4 bits for 1's, as the Custom Flag id sends 1-byte message where the first 4 bits each
-                represent a possible error (see ERROR_DICT for the order)
-                """
-                if (key == 'CustomFlag'):
-                    bits = BitArray(message[key].to_bytes()).bin
-                    for index in range(0, 4):
-                        if bits[index] == '1': # if there IS an error
-                            information[ERROR_DICT[index]] = 1
-                    continue
-            #print(information)
+            with open('Experimentation\ReadingData\TestData\CANData1\logged_output.txt', 'a') as f:
+                f.write(str(message) + "\n")
             print(message)
+            #print(f"Thermistor Temp: {message['ThermistorValue']} degrees Celsius")
+            # for key in message.keys():
+            #     information[key] = message[key]
+            #     """
+            #     The following if statement converts the CustomFlag hex data into binary and checks
+            #     the first 4 bits for 1's, as the Custom Flag id sends 1-byte message where the first 4 bits each
+            #     represent a possible error (see ERROR_DICT for the order)
+            #     """
+            #     if (key == 'CustomFlag'):
+            #         bits = BitArray(message[key].to_bytes()).bin
+            #         for index in range(0, 4):
+            #             if bits[index] == '1': # if there IS an error
+            #                 information[ERROR_DICT[index]] = 1
+            #         continue
+            # #print(information)
+            # print(message)

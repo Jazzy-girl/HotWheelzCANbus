@@ -3,6 +3,7 @@ import cantools.database
 import can
 from time import sleep
 import serial
+import re
 
 DBC_FILE = 'Experimentation/DBC Data/LATEST_DBC.dbc'
 SIM_DATA_FILE = 'Experimentation/ReadingData/TestData/CANData1/LATEST_DATA.txt'
@@ -23,43 +24,48 @@ ser.write(b'O\r')
 print("second write")
 sleep(0.1)
 buffer = ""
-
-def parse_can_message(msg):
-    if not msg.startswith('t'):
-        return None
-    try:
-        can_id = int(msg[1:4], 16)
-        dlc = int(msg[4])
-        data = [int(msg[i:i+2], 16) for i in range(5, 5 + dlc * 2)]
-        return {
-            'can_id': can_id,
-            'dlc': dlc,
-            'data': data
-        }
-    except Exception as e:
-        print(f"FAILED TO PARSE: {e}")
-        return None
+pattern = re.compile(r't[0-9A-Fa-f]{3}[0-9]([0-9A-Fa-f]{2}){0,8}')
 
 try:
     while True:
         if ser.in_waiting:
-            line = ser.read(ser.in_waiting).decode('utf-8', errors='ignore').strip()
-            # line = repr(rawLine)
-            print(f"Raw: {line}")
-            # print(str(line))
-            try:
-                line = str(line)
-                hex_string = line[1:4]
+            # line = ser.readline().decode('utf-8', errors='ignore').strip()
+            chunk = ser.read(ser.in_waiting).decode('utf-8', errors='ignore')
+            buffer += chunk
 
-                can_id = int(hex_string, 16)
-                data = bytes.fromhex(line[5:])
+            # look for all valid msgs in current buffer
+            for match in pattern.finditer(buffer):
+                msg = match.group()
+                # print(f"Raw: {repr(msg)}")
                 try:
-                    msg = db.decode_message(can_id, data)
-                    print(msg)
+                    can_id = int(msg[1:4], 16)
+                    dlc = int(msg[4])
+                    data = bytes.fromhex(msg[5:5+dlc*2])
+                    decoded = db.decode_message(can_id, data)
+                    print(decoded)
+                    with open('Experimentation\ReadingData\TestData\CANData1\direct_data.txt', 'a') as file:
+                        file.write(str(msg[0:5+dlc*2]) + "\n")
                 except Exception as e:
-                    print(f"Message with ID {can_id} not found: {e}")
-            except Exception as e:
-                print(f"Another error! {e}")
+                    print(f"Error!: {e}")
+
+            last_match = list(pattern.finditer(buffer))[-1] if pattern.search(buffer) else None
+            buffer = buffer[last_match.end():] if last_match else buffer[-20:]
+            # line = repr(rawLine)
+            # print(f"Raw: {line}")
+            # print(line)
+            # try:
+            #     line = str(line)
+            #     hex_string = line[1:4]
+
+            #     can_id = int(hex_string, 16)
+            #     data = bytes.fromhex(line[5:])
+            #     try:
+            #         msg = db.decode_message(can_id, data)
+            #         print(msg)
+            #     except Exception as e:
+            #         print(f"Message with ID {can_id} not found: {e}")
+            # except Exception as e:
+            #     print(f"Another error! {e}")
 
 
 

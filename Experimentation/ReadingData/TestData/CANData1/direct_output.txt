@@ -1,0 +1,218 @@
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -1, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -1, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -1, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -1, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -1, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
+{'PackSOC': 1, 'PackCurrent': -2, 'PackInstVoltage': 0.0, 'HighTemp': 22, 'LowTemp': 21, 'CustomFlag': 13}
+{'_12vSupply': 111}
