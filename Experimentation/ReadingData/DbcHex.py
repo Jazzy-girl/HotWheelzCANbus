@@ -16,7 +16,8 @@ VALID_IDs = [
 # LATEST_DATA.txt holds the most updated data
 
 DBC_FILE = 'Experimentation/DBC Data/LATEST_DBC.dbc'
-SIM_DATA_FILE = 'Experimentation/ReadingData/TestData/CANData1/LATEST_DATA.txt'
+# SIM_DATA_FILE = 'Experimentation/ReadingData/TestData/CANData1/LATEST_DATA.txt'
+SIM_DATA_FILE = 'Experimentation/ReadingData/TestData/CANData1/5-5.txt'
 
 FIELDS = {
     'PackSOC',
@@ -61,7 +62,7 @@ with open(SIM_DATA_FILE, 'r') as file:
         if(hex_string in VALID_IDs):
             data = bytes.fromhex(line[5:])
             message = db.decode_message(id, data)
-            with open('Experimentation\ReadingData\TestData\CANData1\logged_output.txt', 'a') as f:
+            with open('Experimentation\ReadingData\TestData\CANData1\logged5-5.txt', 'a') as f:
                 f.write(str(message) + "\n")
             print(message)
             #print(f"Thermistor Temp: {message['ThermistorValue']} degrees Celsius")
