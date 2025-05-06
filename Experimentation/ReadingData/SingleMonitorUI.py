@@ -1,7 +1,8 @@
 import time
 from bitstring import BitArray
-from cantools import *
-from can import *
+import cantools
+import can
+import cantools.database
 import random
 import tkinter as tk
 from tkinter.ttk import *
@@ -17,6 +18,7 @@ try:
 except ImportError:
     print("Running on non-RPI system - camera not available.")
     Picamera2 = None
+import serial
 
 sys.path.append('/Users/divnamijic/Documents/HotWheelzCANbus-4/UI')
 from Speedometer import Speedometer
@@ -45,13 +47,43 @@ CUSTOM_FLAG_INDICES = {
 CAMERA_RATIO = (480, 480)
 ID = [43, 44]  # Message 02B, 02C
 db = cantools.database.load_file(DBC_FILE)
-# canBus = can.Bus()
 
-def get_bms_data():
-    with can.Bus() as bus:
-        bus.recv()
-        for msg in bus:
-            print(msg.data)
+# THIS IS TO CONNECT TO THE BMS DIRECTLY
+ser = serial.Serial(
+    port='COM4',
+    baudrate=9600,
+    timeout=1
+)
+ser.write(b'C\r')
+ser.write(b'S6\r')
+ser.write(b'O\r')
+buffer = ""
+
+def get_bms_data(buffer):
+    messages = []
+    i = 0
+    while i < len(buffer):
+        if buffer[i] != 't':
+            i += 1
+            continue
+        if i + 5 >= len(buffer):
+            break
+        try:
+            can_id = int(buffer[i+1:i+4], 16)
+            dlc = int(buffer[i+4])
+        except:
+            i += 1
+            continue
+
+        msg_len = 1 + 3 + 1 + dlc * 2
+        if i + msg_len > len(buffer):
+            break
+
+        msg = buffer[i:i+msg_len]
+        messages.append(msg)
+        i += msg_len
+
+    return messages, buffer[i:]
 
 def simulate_can_data():
     return {
@@ -138,13 +170,19 @@ def create_display_window():
                 print(f"Camera frame error: {e}")
         root.after(5, update_camera)
 
-    def update_display():
-        # with can.Bus() as bus:
-        #     for message in bus:
-        # message = bus.recv()
-        message = simulate_can_data()
+    def update_display(buffer):
+        chunk = ser.read(ser.in_waiting).decode('utf-8', errors='ignore')
+        buffer += chunk
+        msgs, buffer = get_bms_data(buffer)
+        for msg in msgs:
+            can_id = int(msg[1:4], 16)
+            if(can_id not in ID):
+                continue
+            dlc = int(msg[4])
+            data = bytes.fromhex(msg[5:5+dlc*2])
+            decoded_msg = db.decode_message(can_id, data)
         try:
-            decoded_msg = db.decode_message(message['arbitration_id'], message['data'])
+            # decoded_msg = db.decode_message(message['arbitration_id'], message['data'])
             for param, label in fields.items():
                 if param in decoded_msg:
                     value = decoded_msg[param]
@@ -158,9 +196,9 @@ def create_display_window():
                         label.config(foreground="red")
         except Exception as e:
             print(f"Error decoding CAN message: {e}")
-        root.after(2000, update_display)
+        root.after(2000, update_display, buffer)
 
-    update_display()
+    update_display(buffer)
     update_camera()
     root.mainloop()
 
