@@ -1,14 +1,15 @@
 import time
 from bitstring import BitArray
-from cantools import *
-from can import *
+import cantools
+import can
+import cantools.database
 import random
 import tkinter as tk
 from tkinter.ttk import *
 import tkinter.font as tkFont
 import PIL.Image, PIL.ImageTk
 import sys
-
+import math
 import cantools
 import can
 from time import sleep
@@ -17,11 +18,14 @@ try:
 except ImportError:
     print("Running on non-RPI system - camera not available.")
     Picamera2 = None
+import serial
 
 sys.path.append('/Users/divnamijic/Documents/HotWheelzCANbus-4/UI')
 from Speedometer import Speedometer
 
-
+# DBC_FILE = 'Experimentation/DBC Data/LATEST_DBC.dbc'
+# SIM_DATA_FILE = 'Experimentation/ReadingData/TestData/CANData1/LATEST_DATA.txt'
+# BG_IMAGE = "Experimentation/ReadingData/Resources/images/bg.jpg"
 
 DBC_FILE = '/home/pi/HotWheelz/HotWheelzCANbus/Experimentation/DBC Data/LATEST_DBC.dbc'
 SIM_DATA_FILE = '/home/pi/HotWheelz/HotWheelzCANbus/Experimentation/ReadingData/TestData/CANData1/LATEST_DATA.txt'
@@ -44,10 +48,42 @@ CAMERA_RATIO = (480, 480)
 ID = [43, 44]  # Message 02B, 02C
 db = cantools.database.load_file(DBC_FILE)
 
-def get_bms_data():
-    with can.Bus() as bus:
-        for msg in bus:
-            print(msg.data)
+# THIS IS TO CONNECT TO THE BMS DIRECTLY
+ser = serial.Serial(
+    port='COM4',
+    baudrate=9600,
+    timeout=1
+)
+ser.write(b'C\r')
+ser.write(b'S6\r')
+ser.write(b'O\r')
+buffer = ""
+
+def get_bms_data(buffer):
+    messages = []
+    i = 0
+    while i < len(buffer):
+        if buffer[i] != 't':
+            i += 1
+            continue
+        if i + 5 >= len(buffer):
+            break
+        try:
+            can_id = int(buffer[i+1:i+4], 16)
+            dlc = int(buffer[i+4])
+        except:
+            i += 1
+            continue
+
+        msg_len = 1 + 3 + 1 + dlc * 2
+        if i + msg_len > len(buffer):
+            break
+
+        msg = buffer[i:i+msg_len]
+        messages.append(msg)
+        i += msg_len
+
+    return messages, buffer[i:]
 
 def simulate_can_data():
     return {
@@ -92,19 +128,30 @@ def create_display_window():
     output_font = tkFont.Font(family="Arial", size=25)
     fault_font = tkFont.Font(family="Arial", size=20)
 
-    Separator(data_frame, orient=tk.VERTICAL).grid(column=1, columnspan=2, row=0, rowspan=10, sticky='NS')
+    Separator(data_frame, orient=tk.VERTICAL).grid(column=1, columnspan=2, row=0, rowspan=13, sticky='NS')
+    Separator(data_frame, orient=tk.HORIZONTAL).grid(column=0, columnspan=4, row=2, rowspan=1, sticky='EW')
+    Separator(data_frame, orient=tk.HORIZONTAL).grid(column=0, columnspan=4, row=5, rowspan=1, sticky='EW')
+    Separator(data_frame, orient=tk.HORIZONTAL).grid(column=0, columnspan=4, row=8, rowspan=1, sticky='EW')
+    Separator(data_frame, orient=tk.HORIZONTAL).grid(column=0, columnspan=4, row=10, rowspan=1, sticky='EW')
 
     for i in range(len(DATA_LABELS)):
         row = (i // 2) * 2
+        if(i>1):
+            row += 1
+            if(i>3):
+                row += 1
+        # row = math.floor(((i/2) + (math.sqrt(i)/2)))
         col = (i % 2) * 3
         data_label = Label(data_frame, text=DATA_LABELS[i], font=data_font, background="black", foreground="white")
-        data_label.grid(row=row, column=col)
+        data_label.grid(row=row, column=col, pady=(10,0))
         output_label = Label(data_frame, text="NULL", font=output_font, background="black", foreground="white")
-        output_label.grid(row=row+1, column=col, pady=(0,10))
+        output_label.grid(row=row+1, column=col)
         fields[PARAMETERS[i]] = output_label
 
     for i in range(len(FAULT_LABELS)):
-        row = ((i + len(DATA_LABELS)) // 2) * 2
+        row = ((i + len(DATA_LABELS)) // 2) * 2 + 3
+        if(i>1):
+            row+=1
         col = (i % 2) * 3
         fault_label = Label(data_frame, text=FAULT_LABELS[i], font=fault_font, background="black", foreground="white")
         fault_label.grid(row=row, column=col, pady=20)
@@ -123,26 +170,35 @@ def create_display_window():
                 print(f"Camera frame error: {e}")
         root.after(5, update_camera)
 
-    def update_display():
-        message = simulate_can_data()
-        try:
-            decoded_msg = db.decode_message(message['arbitration_id'], message['data'])
-            for param, label in fields.items():
-                if param in decoded_msg:
-                    value = decoded_msg[param]
-                    label.configure(text=f"{value:.1f}")
-            if 'CustomFlag' in decoded_msg:
-                bits = BitArray(decoded_msg['CustomFlag'].to_bytes()).bin
-                for index in range(0, 4):
-                    label = faultFields[CUSTOM_FLAG_INDICES[index]]
-                    label.config(foreground="white")
-                    if bits[index] == '1':
-                        label.config(foreground="red")
-        except Exception as e:
-            print(f"Error decoding CAN message: {e}")
-        root.after(2000, update_display)
+    def update_display(buffer):
+        chunk = ser.read(ser.in_waiting).decode('utf-8', errors='ignore')
+        buffer += chunk
+        msgs, buffer = get_bms_data(buffer)
+        for msg in msgs:
+            can_id = int(msg[1:4], 16)
+            if(can_id not in ID):
+                continue
+            dlc = int(msg[4])
+            data = bytes.fromhex(msg[5:5+dlc*2])
+            decoded_msg = db.decode_message(can_id, data)
+            try:
+                # decoded_msg = db.decode_message(message['arbitration_id'], message['data'])
+                for param, label in fields.items():
+                    if param in decoded_msg:
+                        value = decoded_msg[param]
+                        label.configure(text=f"{value:.1f}")
+                if 'CustomFlag' in decoded_msg:
+                    bits = BitArray(decoded_msg['CustomFlag'].to_bytes()).bin
+                    for index in range(0, 4):
+                        label = faultFields[CUSTOM_FLAG_INDICES[index]]
+                        label.config(foreground="white")
+                        if bits[index] == '1':
+                            label.config(foreground="red")
+            except Exception as e:
+                print(f"Error decoding CAN message: {e}")
+        root.after(200, update_display, buffer)
 
-    update_display()
+    update_display(buffer)
     update_camera()
     root.mainloop()
 
