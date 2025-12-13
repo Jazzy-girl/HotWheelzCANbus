@@ -8,6 +8,7 @@
 void setup() {
     Serial.begin(9600);
     Serial.println("Starting PONG board");
+
     initRadio();
 }
 void loop() {

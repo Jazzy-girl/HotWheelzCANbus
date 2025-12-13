@@ -11,9 +11,11 @@ void setup() {
 
     initRadio();
 }
+
 void loop() {
     char fmtBuf[PAYLOAD_LEN + 1];
     fmtBuf[PAYLOAD_LEN] = 0;
+
     long fmtStart = micros();
     memcpy(buf, BASE_PING, PREFIX_LEN);
     short tmp = COUNTER++;
