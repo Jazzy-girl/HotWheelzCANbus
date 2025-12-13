@@ -17,7 +17,7 @@ const char* BASE_PONG = "HW PONG ";
 
 #define ERROR_PREFIX_LEN 27
 
-char buf[RH_RF95_MAX_MESSAGE_LEN];
+char buf[RH_RF95_MAX_MESSAGE_LEN + 1];
 char binaryBuf[RH_RF95_MAX_MESSAGE_LEN * 2 + ERROR_PREFIX_LEN + 1]; // two bytes per char + our message + null
 
 bool isNonPrintable(char ch) {
