@@ -1,6 +1,6 @@
 # HotWheelzCANbus
 
-Theoretical code for the Raspberry Pi for interpreting BMS CANbus data and uploading it to a monitor for the driver.
+Code for the Raspberry Pi for interpreting BMS CANbus data and uploading it to a monitor for the driver.
 
 # Developers
 
