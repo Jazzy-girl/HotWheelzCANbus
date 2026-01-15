@@ -17,7 +17,7 @@ if len(sys.argv) < 2 or len(sys.argv) > 3:
     print(f"Usage: {sys.argv[0]} <PORT | FILE> [baudrate]")
     sys.exit(1)
 
-port = sys.argv[0]
+port = sys.argv[1]
 baud = int(sys.argv[2]) if len(sys.argv) == 3 else 9600
 
 if not os.path.exists(port):
