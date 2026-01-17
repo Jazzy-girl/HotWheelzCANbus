@@ -5,6 +5,18 @@ import io
 import base64
 import struct
 import functools
+import math
+
+PULSES_PER_ROTATION = 48
+
+KM_TO_MI = 0.6213712
+
+WHEEL_DIAMETER_IN = 21
+WHEEL_CIRCUMFERENCE_FT = WHEEL_DIAMETER_IN * math.pi / 12
+FT_TO_MI = 1 / 5280
+S_TO_HR = 3600
+
+PULSE_SPEED_MUL = WHEEL_CIRCUMFERENCE_FT / PULSES_PER_ROTATION * FT_TO_MI * S_TO_HR
 
 def thermistor_temp(reading: int) -> tuple[float, float, float]:
     LOW_SIDE_RESISTOR = 10000
@@ -40,11 +52,11 @@ for line in interface:
         print("Escaped:", line)
         data = base64.decodebytes(line.encode('ascii'))
         print("Hex:", data.hex(" "))
-        if len(data) == 40 and data[:2] == b"HW":
+        if len(data) == 46 and data[:2] == b"HW":
             print("Decoded data:")
-            checksum = functools.reduce(lambda x, y: x ^ y, struct.unpack("<4x18H", data))
-            fields = struct.unpack("<xxHI dd iIBBI5B", data)
-            provided, timestamp, lon, lat, temp, curr, volt, soc, health, amph, hitemp, lotemp, avgtemp, hstemp, faults = fields
+            checksum = functools.reduce(lambda x, y: x ^ y, struct.unpack("<4x21H", data))
+            fields = struct.unpack("<xxHI dd iIBBI5B x fH", data)
+            provided, timestamp, lon, lat, temp, curr, volt, soc, health, amph, hitemp, lotemp, avgtemp, hstemp, faults, gpsSpeed, motorSpeed = fields
             cvol, cres, ctemp = thermistor_temp(temp)
             print("Header:")
             print(f"  Provided checksum:     {hex(provided)}")
@@ -73,5 +85,8 @@ for line in interface:
             print(f"  Current sensor fault:  {faults & 2 != 0}")
             print(f"  Pack voltage fault:    {faults & 4 != 0}")
             print(f"  Thermistor fault:      {faults & 8 != 0}")
+            print("Speed:")
+            print(f"  GPS speed:             {gpsSpeed * KM_TO_MI} mph")
+            print(f"  Motor speed:           {motorSpeed * PULSE_SPEED_MUL} mph")
         else:
             print("Unknown data")
