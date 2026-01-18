@@ -47,6 +47,8 @@ for line in interface:
     if len(line) == 0:
         print()
     elif line[0] == '!':
+        if line[-1] == '\n':
+            line = line[:-1]
         print("Text:", line[1:])
     else:
         print("Escaped:", line)
@@ -55,7 +57,7 @@ for line in interface:
         if len(data) == 46 and data[:2] == b"HW":
             print("Decoded data:")
             checksum = functools.reduce(lambda x, y: x ^ y, struct.unpack("<4x21H", data))
-            fields = struct.unpack("<xxHI dd iIBBI5B x fH", data)
+            fields = struct.unpack("<xxHI dd H hHBBH5B x fH", data)
             provided, timestamp, lon, lat, temp, curr, volt, soc, health, amph, hitemp, lotemp, avgtemp, hstemp, faults, gpsSpeed, motorSpeed = fields
             cvol, cres, ctemp = thermistor_temp(temp)
             print("Header:")
@@ -67,7 +69,7 @@ for line in interface:
             print(f"  Longitude:             {lon}°")
             print(f"  Latitude:              {lat}°")
             print("Cockpit temperature:")
-            print(f"  Raw reading:           {ctemp}")
+            print(f"  Raw reading:           {temp}")
             print(f"  Voltage:               {cvol * 5} V")
             print(f"  Resistance:            {cres} Ω")
             print(f"  Temperature:           {ctemp}°C")
@@ -80,7 +82,7 @@ for line in interface:
             print(f"  High temperature:      {hitemp - 40}°C")
             print(f"  Low temperature:       {lotemp - 40}°C")
             print(f"  Average temperature:   {avgtemp - 40}°C")
-            print(f"  Heat sink temperature: {hitemp - 40}°C")
+            print(f"  Heat sink temperature: {hstemp - 40}°C")
             print(f"  Low cell voltage:      {faults & 1 != 0}")
             print(f"  Current sensor fault:  {faults & 2 != 0}")
             print(f"  Pack voltage fault:    {faults & 4 != 0}")
