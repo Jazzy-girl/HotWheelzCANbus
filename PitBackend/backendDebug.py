@@ -56,7 +56,7 @@ for line in interface:
         print("Hex:", data.hex(" "))
         if len(data) == 46 and data[:2] == b"HW":
             print("Decoded data:")
-            checksum = functools.reduce(lambda x, y: x ^ y, struct.unpack("<4x21H", data))
+            checksum = functools.reduce(int.__xor__, struct.unpack("<4x21H", data))
             fields = struct.unpack("<xxHI dd H hHBBH5B x fH", data)
             provided, timestamp, lon, lat, temp, curr, volt, soc, health, amph, hitemp, lotemp, avgtemp, hstemp, faults, gpsSpeed, motorSpeed = fields
             cvol, cres, ctemp = thermistor_temp(temp)
