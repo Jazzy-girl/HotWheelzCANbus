@@ -44,7 +44,8 @@ testPacket = ParsedPacket(checksum, timestamp, gps_lon, gps_lat
                           motor_speed)
 def logdata(data: ParsedPacket):
 
-    with open(FILENAME, '+a', -1) as csvfile:
+    with open(FILENAME, '+a', newline='') as csvfile:
+
         writer = csv.writer(csvfile)
         writer.writerow(data)
 

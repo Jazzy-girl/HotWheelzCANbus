@@ -1,1 +1,1 @@
-1,1,1.0,1.0,1,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1,1,1,1,False,True,True,True,1.0,1.0
+checksum,timestamp,gps_lon,gps_lat,therm_reading,therm_voltage,therm_resistance,therm_temp,bms_current,bms_voltage,bms_soc,bms_health,bms_amphours,bms_hi_temp,bms_lo_temp,bms_avg_temp,bms_heatsink_temp,fault_low_cell_voltage,fault_current_sensor,fault_pack_voltage,fault_thermistor,gps_speed,motor_speed
