@@ -1,7 +1,7 @@
 // change this if we wire it differently
 #define RFM95_CS   8
 #define RFM95_RST  4
-#define RFM95_INT  3
+#define RFM95_INT  2
 
 #include "common.h"
 
@@ -38,12 +38,8 @@ void loop() {
     Serial.println("us");
 
     long sendStart = micros();
-    Serial.println("Sending packet...");
     rf.send((uint8_t*)buf, MESSAGE_LEN);
-    Serial.println("Waiting for packet to be sent...");
-    bool result = rf.waitPacketSent(1000);
-    Serial.print("Packet sent: ");
-    Serial.println(result);
+    rf.waitPacketSent();
     long sendEnd = micros();
 
     Serial.print("Sent in ");
@@ -84,4 +80,5 @@ void loop() {
     Serial.print("Received ");
     Serial.print(received);
     Serial.println(valid ? " messages, with valid" : " messages, none valid");
+    delay(500);
 }
