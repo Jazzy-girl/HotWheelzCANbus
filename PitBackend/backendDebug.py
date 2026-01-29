@@ -3,27 +3,10 @@ import os
 import sys
 import io
 import base64
-import struct
-import functools
 import math
 
-PULSES_PER_ROTATION = 48
-
-KM_TO_MI = 0.6213712
-
-WHEEL_DIAMETER_IN = 21
-WHEEL_CIRCUMFERENCE_FT = WHEEL_DIAMETER_IN * math.pi / 12
-FT_TO_MI = 1 / 5280
-S_TO_HR = 3600
-
-PULSE_SPEED_MUL = WHEEL_CIRCUMFERENCE_FT / PULSES_PER_ROTATION * FT_TO_MI * S_TO_HR
-
-def thermistor_temp(reading: int) -> tuple[float, float, float]:
-    LOW_SIDE_RESISTOR = 10000
-    voltage = reading / 1024
-    resistance = LOW_SIDE_RESISTOR / voltage - LOW_SIDE_RESISTOR
-    temperature = 0
-    return voltage, resistance, temperature
+sys.path.append(__file__ + "/..")
+import packet
 
 if len(sys.argv) < 2 or len(sys.argv) > 3:
     print(f"Usage: {sys.argv[0]} <PORT | FILE> [baudrate]")
@@ -56,39 +39,38 @@ for line in interface:
         print("Hex:", data.hex(" "))
         if len(data) == 46 and data[:2] == b"HW":
             print("Decoded data:")
-            checksum = functools.reduce(lambda x, y: x ^ y, struct.unpack("<4x21H", data))
-            fields = struct.unpack("<xxHI dd H hHBBH5B x fH", data)
-            provided, timestamp, lon, lat, temp, curr, volt, soc, health, amph, hitemp, lotemp, avgtemp, hstemp, faults, gpsSpeed, motorSpeed = fields
-            cvol, cres, ctemp = thermistor_temp(temp)
+            raw = packet.RawPacket.unpack_bytes(data)
+            checksum = packet.checksum_of_data(data)
+            pack = raw.parse()
             print("Header:")
-            print(f"  Provided checksum:     {hex(provided)}")
+            print(f"  Provided checksum:     {hex(pack.checksum)}")
             print(f"  Calculated checksum:   {hex(checksum)}")
-            print(f"  Checksums match:       {provided == checksum}")
-            print(f"  Timestamp:             {timestamp} ms")
+            print(f"  Checksums match:       {pack.checksum == checksum}")
+            print(f"  Timestamp:             {pack.timestamp} ms")
             print("GPS:")
-            print(f"  Longitude:             {lon}°")
-            print(f"  Latitude:              {lat}°")
+            print(f"  Longitude:             {pack.gps_lon}°")
+            print(f"  Latitude:              {pack.gps_lat}°")
             print("Cockpit temperature:")
-            print(f"  Raw reading:           {temp}")
-            print(f"  Voltage:               {cvol * 5} V")
-            print(f"  Resistance:            {cres} Ω")
-            print(f"  Temperature:           {ctemp}°C")
+            print(f"  Raw reading:           {pack.therm_reading}")
+            print(f"  Voltage:               {pack.therm_voltage} V")
+            print(f"  Resistance:            {pack.therm_resistance} Ω")
+            print(f"  Temperature:           {pack.therm_temp}°C")
             print("BMS data:")
-            print(f"  Pack current:          {curr * 0.1} A")
-            print(f"  Pack voltage:          {volt * 0.1} V")
-            print(f"  Pack SOC:              {soc * 0.5}%")
-            print(f"  Pack health:           {health * 0.5}%")
-            print(f"  Pack amphours:         {amph * 0.1} Ah")
-            print(f"  High temperature:      {hitemp - 40}°C")
-            print(f"  Low temperature:       {lotemp - 40}°C")
-            print(f"  Average temperature:   {avgtemp - 40}°C")
-            print(f"  Heat sink temperature: {hstemp - 40}°C")
-            print(f"  Low cell voltage:      {faults & 1 != 0}")
-            print(f"  Current sensor fault:  {faults & 2 != 0}")
-            print(f"  Pack voltage fault:    {faults & 4 != 0}")
-            print(f"  Thermistor fault:      {faults & 8 != 0}")
+            print(f"  Pack current:          {pack.bms_current} A")
+            print(f"  Pack voltage:          {pack.bms_voltage} V")
+            print(f"  Pack SOC:              {pack.bms_soc}%")
+            print(f"  Pack health:           {pack.bms_health}%")
+            print(f"  Pack amphours:         {pack.bms_amphours} Ah")
+            print(f"  High temperature:      {pack.bms_hi_temp}°C")
+            print(f"  Low temperature:       {pack.bms_lo_temp}°C")
+            print(f"  Average temperature:   {pack.bms_avg_temp}°C")
+            print(f"  Heat sink temperature: {pack.bms_heatsink_temp}°C")
+            print(f"  Low cell voltage:      {pack.fault_low_cell_voltage}")
+            print(f"  Current sensor fault:  {pack.fault_current_sensor}")
+            print(f"  Pack voltage fault:    {pack.fault_pack_voltage}")
+            print(f"  Thermistor fault:      {pack.fault_thermistor}")
             print("Speed:")
-            print(f"  GPS speed:             {gpsSpeed * KM_TO_MI} mph")
-            print(f"  Motor speed:           {motorSpeed * PULSE_SPEED_MUL} mph")
+            print(f"  GPS speed:             {pack.gps_speed} mph")
+            print(f"  Motor speed:           {pack.motor_speed} mph")
         else:
             print("Unknown data")
