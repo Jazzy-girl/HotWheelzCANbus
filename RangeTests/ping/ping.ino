@@ -38,8 +38,12 @@ void loop() {
     Serial.println("us");
 
     long sendStart = micros();
+    Serial.println("Sending packet...");
     rf.send((uint8_t*)buf, MESSAGE_LEN);
-    // rf.waitPacketSent();
+    Serial.println("Waiting for packet to be sent...");
+    bool result = rf.waitPacketSent(1000);
+    Serial.print("Packet sent: ");
+    Serial.println(result);
     long sendEnd = micros();
 
     Serial.print("Sent in ");
@@ -47,7 +51,7 @@ void loop() {
     Serial.println("us");
 
     long listenStart = micros();
-    long deadline = listenStart + 10000000;
+    long deadline = listenStart + 3000000;
     long currentRx;
     int received = 0;
     bool valid = false;
