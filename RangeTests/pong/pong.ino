@@ -9,7 +9,7 @@ void setup() {
     while (!Serial);
     Serial.begin(9600);
     Serial.println("Starting PONG board");
-
+    pinMode(13, OUTPUT);
     initRadio();
 }
 void loop() {
@@ -21,7 +21,9 @@ void loop() {
 
                 long sendStart = micros();
                 rf.send((uint8_t*)buf, MESSAGE_LEN);
+                digitalWrite(13, HIGH);
                 rf.waitPacketSent();
+                digitalWrite(13, LOW);
                 long sendEnd = micros();
 
                 Serial.print("Sent in ");
