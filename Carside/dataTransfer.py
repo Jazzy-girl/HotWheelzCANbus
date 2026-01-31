@@ -4,6 +4,17 @@ Code to transfer data from the Raspberry Pi to the transceiver (to send to the P
 """
 
 """
+Setup:
+
+pip3 install adafruit-circuitpython-rfm9x
+
+and maybe also:
+
+pip3 install adafruit-circuitpython-lis3dh
+
+"""
+
+"""
 format:
 46 byte packet
 Header: 0 - 8
