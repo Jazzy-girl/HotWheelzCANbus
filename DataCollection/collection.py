@@ -77,6 +77,25 @@ speed = SpeedWorker()
 sender = SenderWorker()
 
 
+listener = can.listen(timeout=0.1)
+def get_can():
+    msg = listener.receive()
+    if msg is None:
+        return 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+    else: # else parse it into separate fields; 12 bytes?
+        data = msg.data
+        curr = data[0:2]
+        volt = data[2:4]
+        soc = data[4]
+        health = data[5]
+        amp = data[6:8]
+        hitemp = data[8]
+        lotemp = data[9]
+        avgtemp = data[10]
+        hstemp = data[11]
+        faults = data[12]
+        return curr, volt, soc, health, amp, hitemp, lotemp, avgtemp, hstemp, faults
+
 
 while True:
     gps.update()
@@ -84,16 +103,8 @@ while True:
     lon = gps.longitude if gps.has_fix else 0
     lat = gps.latitude if gps.has_fix else 0
     temp = thermistor.value
-    curr = 0
-    volt = 0
-    soc = 0
-    health = 0
-    amph = 0
-    hitemp = 0
-    lotemp = 0
-    avgtemp = 0
-    hstemp = 0
-    faults = 0
+
+    curr, volt, soc, health, amp, hitemp, lotemp, avgtemp, hstemp, faults = get_can()
     gpsSpeed = gps.speed_kmh if gps.has_fix and gps.speed_kmh is not None else 0
     motorSpeed = speed.pulses()
     checksum = 0
