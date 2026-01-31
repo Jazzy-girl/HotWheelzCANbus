@@ -58,7 +58,8 @@ class SenderWorker(threading.Thread):
         self.lora_rst = digitalio.DigitalInOut(board.D5)
         # self.lora_int = digitalio.DigitalInOut(board.D6)
         self.lora_cs = digitalio.DigitalInOut(board.D13)
-        self.lora = adafruit_rfm9x.RFM9x(spi0, self.lora_cs, self.lora_rst, 915.0)
+        FREQUENCY = 915
+        self.lora = adafruit_rfm9x.RFM9x(spi0, self.lora_cs, self.lora_rst, FREQUENCY)
     def run(self):
         while True:
             if self.to_send is None:
