@@ -17,6 +17,9 @@ from adafruit_mcp3xxx.analog_in import AnalogIn
 sys.path.append(__file__ + "/..")
 import packet
 
+# BMS / CANbus
+import cantools, can, serial
+
 uart = busio.UART(board.TX, board.RX, baudrate=9600, timeout=10)
 spi0 = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
 spi1 = busio.SPI(board.SCK_1, MOSI=board.MOSI_1, MISO=board.MISO_1)
@@ -72,6 +75,8 @@ class SenderWorker(threading.Thread):
 
 speed = SpeedWorker()
 sender = SenderWorker()
+
+
 
 while True:
     gps.update()
