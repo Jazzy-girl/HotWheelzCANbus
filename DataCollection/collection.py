@@ -1,8 +1,7 @@
 import collections
 import time
 import threading
-import struct
-import functools
+import sys
 
 import board
 import busio
@@ -15,13 +14,15 @@ from adafruit_mcp2515.canio import Message, RemoteTransmissionRequest
 import adafruit_mcp3xxx.mcp3008 as mcp
 from adafruit_mcp3xxx.analog_in import AnalogIn
 
+sys.path.append(__file__ + "/..")
+import packet
+
 uart = busio.UART(board.TX, board.RX, baudrate=9600, timeout=10)
 spi0 = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
 spi1 = busio.SPI(board.SCK_1, MOSI=board.MOSI_1, MISO=board.MISO_1)
 
 adc_cs = digitalio.DigitalInOut(board.D24)
 can_cs = digitalio.DigitalInOut(board.D25)
-
 
 gps = adafruit_gps.GPS(uart, debug=False)
 can = adafruit_mcp2515.MCP2515(spi1, can_cs, loopback=False, silent=False)
@@ -90,10 +91,8 @@ while True:
     faults = 0
     gpsSpeed = gps.speed_kmh if gps.has_fix and gps.speed_kmh is not None else 0
     motorSpeed = speed.pulses()
-    data = struct.pack("<4xI dd H hHBBH5B x fH", timestamp, lon, lat, temp, curr, volt, soc, health, amph, hitemp, lotemp, avgtemp, hstemp, faults, gpsSpeed, motorSpeed)
-    data = bytearray(data)
-    data[0:2] = b"HW"
-    checksum = functools.reduce(int.__xor__, struct.unpack("<4x21H", data))
-    data[2:4] = checksum.to_bytes(2, "little")
+    checksum = 0
+    pack = packet.RawPacket(checksum, timestamp, lon, lat, temp, curr, volt, soc, health, amph, hitemp, lotemp, avgtemp, hstemp, faults, gpsSpeed, motorSpeed)
+    data = pack.pack_bytes(True)
     sender.to_send = data
     print(data.hex())
