@@ -103,8 +103,7 @@ while True:
     lon = gps.longitude if gps.has_fix else 0
     lat = gps.latitude if gps.has_fix else 0
     temp = thermistor.value
-
-    curr, volt, soc, health, amp, hitemp, lotemp, avgtemp, hstemp, faults = get_can()
+    curr, volt, soc, health, amph, hitemp, lotemp, avgtemp, hstemp, faults = get_can()
     gpsSpeed = gps.speed_kmh if gps.has_fix and gps.speed_kmh is not None else 0
     motorSpeed = speed.pulses()
     checksum = 0
