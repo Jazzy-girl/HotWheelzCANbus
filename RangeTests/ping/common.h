@@ -45,16 +45,16 @@ void initRadio() {
         while (1);
     }
 
-    rf.setTxPower(23, false);
+    rf.setTxPower(23, false); // set transmission power, 23 dBm (the highest strength)
 
     memcpy(binaryBuf, "Unexpected binary message: ", ERROR_PREFIX_LEN);
 }
 
 void printUnexpected(uint8_t len) {
     bool isBinary = false;
-    char const* bPtr = buf;
-    char const* const bEnd = bPtr + len;
-    while (bPtr < bEnd) if (isNonPrintable(*bPtr++)) {
+    char const* bPtr = buf; // pointer to the start of our buffer
+    char const* const bEnd = bPtr + len; // pointer to the end of buffer
+    while (bPtr < bEnd) if (isNonPrintable(*bPtr++)) { // iterate over the buffer, searching for a non-printable byte
         isBinary = true;
         break;
     }
@@ -63,13 +63,13 @@ void printUnexpected(uint8_t len) {
         char* wPtr = binaryBuf + ERROR_PREFIX_LEN;
         while (rPtr < bEnd) {
             char b = *rPtr++;
-            *wPtr++ = HEX_BYTES[b >> 4];
-            *wPtr++ = HEX_BYTES[b & 15];
+            *wPtr++ = HEX_BYTES[b >> 4]; // get the hex character for the upper four bits
+            *wPtr++ = HEX_BYTES[b & 15]; // get the hex character for the lower four bits
         }
-        *wPtr = 0;
+        *wPtr = 0; // null-terminate the buffer
         Serial.println(binaryBuf);
     } else {
-        buf[len] = 0;
+        buf[len] = 0; // null-terminate the buffer
         Serial.print("Unexpected printable message: ");
         Serial.println(buf);
     }

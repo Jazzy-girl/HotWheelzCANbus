@@ -6,7 +6,7 @@
 #include "common.h"
 
 void setup() {
-    while (!Serial);
+    while (!Serial); // wait for serial to be initialized
     Serial.begin(9600);
     Serial.println("Starting PING board");
 
@@ -18,13 +18,13 @@ void loop() {
     fmtBuf[PAYLOAD_LEN] = 0;
 
     long fmtStart = micros();
-    memcpy(buf, BASE_PING, PREFIX_LEN);
+    memcpy(buf, BASE_PING, PREFIX_LEN); // copy the ping message into the buffer
     short tmp = COUNTER++;
-    char* bStart = buf + MESSAGE_LEN;
-    char* bEnd = buf + PREFIX_LEN;
+    char* bStart = buf + MESSAGE_LEN; // end of the message buffer (called start because we're iterating right-to-left)
+    char* bEnd = buf + PREFIX_LEN; // start of the messgae buffer (called end for the same reason)
     while (bStart-- > bEnd) {
-        *bStart = HEX_BYTES[tmp & 15];
-        tmp >>= 4;
+        *bStart = HEX_BYTES[tmp & 15]; // get the lower four bits
+        tmp >>= 4; // right-shift to divide by 116
     }
     memcpy(fmtBuf, buf + PREFIX_LEN, PAYLOAD_LEN);
     buf[MESSAGE_LEN] = 0;
@@ -47,7 +47,7 @@ void loop() {
     Serial.println("us");
 
     long listenStart = micros();
-    long deadline = listenStart + 3000000;
+    long deadline = listenStart + 3000000; // 3s timeout
     long currentRx;
     int received = 0;
     bool valid = false;
@@ -56,9 +56,9 @@ void loop() {
         uint8_t len = RH_RF95_MAX_MESSAGE_LEN;
         if (rf.available() && rf.recv((uint8_t*)buf, &len)) {
             ++received;
-            if (len == MESSAGE_LEN && !memcmp(buf, BASE_PONG, PREFIX_LEN)) {
+            if (len == MESSAGE_LEN && !memcmp(buf, BASE_PONG, PREFIX_LEN)) { // if our message looks like the right shape
                 // we're receiving a pong
-                if (memcmp(buf + PREFIX_LEN, fmtBuf, PAYLOAD_LEN)) {
+                if (memcmp(buf + PREFIX_LEN, fmtBuf, PAYLOAD_LEN)) { // compare against our last payload
                     Serial.print("Got a packet with the wrong payload: expected ");
                     Serial.print(fmtBuf);
                     Serial.print(", got ");
@@ -72,7 +72,7 @@ void loop() {
                 printUnexpected(len);
             }
         }
-    } while (currentRx < deadline); // 10s timeout
+    } while (currentRx < deadline); // exit at timeout
     
     Serial.print("Listened for ");
     Serial.print(currentRx - listenStart);

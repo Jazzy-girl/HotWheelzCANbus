@@ -6,12 +6,14 @@
 #include "common.h"
 
 void setup() {
-    while (!Serial);
+    while (!Serial); // wait for serial to be initialized
     Serial.begin(9600);
     Serial.println("Starting PONG board");
     pinMode(13, OUTPUT);
+
     initRadio();
 }
+
 void loop() {
     uint8_t len = RH_RF95_MAX_MESSAGE_LEN;
     if (rf.available()) {
@@ -20,9 +22,11 @@ void loop() {
                 buf[4] = 'O'; // change the PING to PONG
                 long sendStart = micros();
                 rf.send((uint8_t*)buf, MESSAGE_LEN);
+
                 digitalWrite(13, HIGH);
                 rf.waitPacketSent();
                 digitalWrite(13, LOW);
+
                 long sendEnd = micros();
 
                 Serial.print("Sent in ");
