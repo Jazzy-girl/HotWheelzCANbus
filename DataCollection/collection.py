@@ -14,7 +14,7 @@ from adafruit_mcp2515.canio import Message
 import adafruit_mcp3xxx.mcp3008 as mcp
 from adafruit_mcp3xxx.analog_in import AnalogIn
 
-sys.path.append(__file__ + "/..")
+sys.path.append(__file__ + "/..") # modify the import path to find the packet module
 import packet
 
 uart = busio.UART(board.TX, board.RX, baudrate=9600, timeout=10)
@@ -32,6 +32,9 @@ gps.send_command(b"PMTK314,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0") # magic data 
 gps.send_command(b"PMTK220,500")
 
 class SpeedWorker(threading.Thread):
+    """
+    A worker thread that handles polling for pulses from a digital input to get motor speed
+    """
     def __init__(self):
         self.queue = collections.deque()
         self.daemon = True
@@ -52,6 +55,9 @@ class SpeedWorker(threading.Thread):
         return len(self.queue)
 
 class SenderWorker(threading.Thread):
+    """
+    A worker thread that handles sending messages over LoRa
+    """
     def __init__(self):
         self.daemon = True
         self.to_send = None
@@ -67,10 +73,13 @@ class SenderWorker(threading.Thread):
                 time.sleep(0.001)
             else:
                 data= self.to_send
-                self.to_send = None
+                self.to_send = None # there's theoretically a race condition here where we lose a message as we're sending it but I don't care
                 self.lora.send(data)
 
 class CanBusWorker(threading.Thread):
+    """
+    A worker thread that handles polling the CAN bus
+    """
     def __init__(self):
         self.daemon = True
         self.message = bytearray(13)
@@ -96,10 +105,9 @@ while True:
     temp = thermistor.value
     gps_speed = gps.speed_kmh if gps.has_fix and gps.speed_kmh is not None else 0
     motor_speed = speed.pulses()
-    checksum = 0
     pack = packet.RawPacket.without_bms(timestamp, lon, lat, temp, gps_speed, motor_speed)
     data = pack.pack_bytes(False)
-    data[26:39] = canbus.message
+    data[26:39] = canbus.message # insert the BMS data into our packet
     packet.write_checksum(data)
     sender.to_send = data
     print(data.hex())
