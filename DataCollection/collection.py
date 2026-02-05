@@ -58,6 +58,7 @@ class SpeedWorker(threading.Thread):
 
 class SenderWorker(threading.Thread):
     def __init__(self):
+        self.daemon = True
         self.to_send = None
         self.lora_rst = digitalio.DigitalInOut(board.D5)
         # self.lora_int = digitalio.DigitalInOut(board.D6)
@@ -73,29 +74,20 @@ class SenderWorker(threading.Thread):
                 self.to_send = None
                 self.lora.send(data)
 
+class CanBusWorker(threading.Thread):
+    def __init__(self):
+        self.daemon = True
+        self.message = bytearray(13)
+        self.listener = can.listen(timeout=0.1)
+    def run(self):
+        while True:
+            msg = self.listener.receive()
+            if msg is not None:
+                self.message = msg
+
 speed = SpeedWorker()
 sender = SenderWorker()
-
-
-listener = can.listen(timeout=0.1)
-def get_can():
-    msg = listener.receive()
-    if msg is None:
-        return 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-    else: # else parse it into separate fields; 12 bytes?
-        data = msg.data
-        curr = data[0:2]
-        volt = data[2:4]
-        soc = data[4]
-        health = data[5]
-        amp = data[6:8]
-        hitemp = data[8]
-        lotemp = data[9]
-        avgtemp = data[10]
-        hstemp = data[11]
-        faults = data[12]
-        return curr, volt, soc, health, amp, hitemp, lotemp, avgtemp, hstemp, faults
-
+canbus = CanBusWorker()
 
 while True:
     gps.update()
@@ -107,7 +99,9 @@ while True:
     gpsSpeed = gps.speed_kmh if gps.has_fix and gps.speed_kmh is not None else 0
     motorSpeed = speed.pulses()
     checksum = 0
-    pack = packet.RawPacket(checksum, timestamp, lon, lat, temp, curr, volt, soc, health, amph, hitemp, lotemp, avgtemp, hstemp, faults, gpsSpeed, motorSpeed)
-    data = pack.pack_bytes(True)
+    pack = packet.RawPacket.without_bms(timestamp, lon, lat, temp, gpsSpeed, motorSpeed)
+    data = pack.pack_bytes(False)
+    data[26:39] = canbus.message
+    packet.write_checksum(data)
     sender.to_send = data
     print(data.hex())

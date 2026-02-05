@@ -3,7 +3,7 @@ import functools
 import math
 from typing import NamedTuple
 
-format = "<xxHI dd H hHBBH5B x fH"
+PACKET_FORMAT = "<xxHI dd H hHBBH5B x fH"
 
 PULSES_PER_ROTATION = 48
 
@@ -27,6 +27,10 @@ def thermistor_temp(reading: int) -> tuple[float, float, float]:
 def checksum_of_data(data: bytes | bytearray) -> int:
     return functools.reduce(int.__xor__, struct.unpack("<4x21H", data))
 
+def write_checksum(data: bytearray):
+    cs = checksum_of_data(data)
+    data[2:4] = cs.to_bytes(2, "little")
+
 class RawPacket(NamedTuple):
     """
     A raw packet, with fields in the same format that they're passed in the packed format
@@ -35,7 +39,7 @@ class RawPacket(NamedTuple):
     timestamp: int
     gps_lon: float
     gps_lat: float
-    temp: int 
+    temp: int
     curr: int
     volt: int
     soc: int
@@ -49,17 +53,37 @@ class RawPacket(NamedTuple):
     gps_speed: float
     motor_speed: int
     @staticmethod
+    def without_bms(timestamp: int, gps_lon: float, gps_lat: float, temp: int, gps_speed: float, motor_speed: int) -> 'RawPacket':
+        return RawPacket(
+            checksum=0, 
+            timestamp=timestamp,
+            gps_lon=gps_lon,
+            gps_lat=gps_lat,
+            temp=temp,
+            curr=0,
+            volt=0,
+            soc=0,
+            health=0,
+            amph=0,
+            hitemp=0,
+            lotemp=0,
+            avgtemp=0,
+            hstemp=0,
+            faults=0,
+            gps_speed=gps_speed,
+            motor_speed=motor_speed
+        )
+    @staticmethod
     def unpack_bytes(data: bytes | bytearray) -> 'RawPacket':
-        return RawPacket(*struct.unpack(format, data))
+        return RawPacket(*struct.unpack(PACKET_FORMAT, data))
     def pack_bytes(self, with_checksum = False) -> bytearray:
-        data = bytearray(struct.pack(format, *self))
+        data = bytearray(struct.pack(PACKET_FORMAT, *self))
         data[0:2] = b"HW"
         if with_checksum:
-            cs = checksum_of_data(data)
-            data[2:4] = cs.to_bytes(2, "little")
+            write_checksum(data)
         return data
     def calc_checksum(self) -> int:
-        data = struct.pack(format, *self)
+        data = struct.pack(PACKET_FORMAT, *self)
         return checksum_of_data(data)
     def with_checksum(self) -> 'RawPacket':
         return self._replace(checksum=self.calc_checksum())
