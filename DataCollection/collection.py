@@ -2,6 +2,7 @@ import collections
 import time
 import threading
 import sys
+import base64
 
 import board
 import busio
@@ -97,17 +98,19 @@ speed = SpeedWorker()
 sender = SenderWorker()
 canbus = CanBusWorker()
 
-while True:
-    gps.update()
-    timestamp = time.monotonic_ns() // 1000
-    lon = gps.longitude if gps.has_fix else 0
-    lat = gps.latitude if gps.has_fix else 0
-    temp = thermistor.value
-    gps_speed = gps.speed_kmh if gps.has_fix and gps.speed_kmh is not None else 0
-    motor_speed = speed.pulses()
-    pack = packet.RawPacket.without_bms(timestamp, lon, lat, temp, gps_speed, motor_speed)
-    data = pack.pack_bytes(False)
-    data[26:39] = canbus.message # insert the BMS data into our packet
-    packet.write_checksum(data)
-    sender.to_send = data
-    print(data.hex())
+with open(time.strftime("logs/data_%Y%m%d_%H%M%S.csv", time.localtime()), "w+") as f: # a log name might be like "logs/data_20260204_210517.csv"
+    print(file=f, sep=",", *(packet.ParsedPacket._fields + ("sent",))) # write all of the field names to the file, then "sent", all comma-separated
+    while True:
+        gps.update()
+        timestamp = time.monotonic_ns() // 1000
+        lon = gps.longitude if gps.has_fix else 0
+        lat = gps.latitude if gps.has_fix else 0
+        temp = thermistor.value
+        gps_speed = gps.speed_kmh if gps.has_fix and gps.speed_kmh is not None else 0
+        motor_speed = speed.pulses()
+        pack = packet.RawPacket.without_bms(timestamp, lon, lat, temp, gps_speed, motor_speed)
+        pack = pack.update_from_bms(canbus.message)
+        data = pack.pack_bytes(True)
+        sender.to_send = data
+        parsed = pack.parse()
+        print(file=f, sep=",", *(parsed + (base64.encodebytes(data).decode('ascii'),))) # write all of the tuple fields to the file, then the packet itself, encoded as base64

@@ -54,6 +54,9 @@ class RawPacket(NamedTuple):
     motor_speed: int
     @staticmethod
     def without_bms(timestamp: int, gps_lon: float, gps_lat: float, temp: int, gps_speed: float, motor_speed: int) -> 'RawPacket':
+        """
+        Create a RawPacket with all BMS data zeroed
+        """
         return RawPacket(
             checksum=0, 
             timestamp=timestamp,
@@ -73,21 +76,42 @@ class RawPacket(NamedTuple):
             gps_speed=gps_speed,
             motor_speed=motor_speed
         )
+    def update_from_bms(self, data: bytes | bytearray) -> 'RawPacket':
+        """
+        Update the packet with BMS data
+        """
+        curr, volt, soc, health, amph, hitemp, lotemp, avgtemp, hstemp, faults = struct.unpack("hHBBH5B", data)
+        return self._replace(curr=curr, volt=volt, soc=soc, health=health, amph=amph, hitemp=hitemp, lotemp=lotemp, avgtemp=avgtemp, hstemp=hstemp, faults=faults)
     @staticmethod
     def unpack_bytes(data: bytes | bytearray) -> 'RawPacket':
+        """
+        Unpack data in bytes into a packet
+        """
         return RawPacket(*struct.unpack(PACKET_FORMAT, data))
     def pack_bytes(self, with_checksum = False) -> bytearray:
+        """
+        Pack data in a packet into bytes, maybe overwriting the checksum
+        """
         data = bytearray(struct.pack(PACKET_FORMAT, *self))
         data[0:2] = b"HW"
         if with_checksum:
             write_checksum(data)
         return data
     def calc_checksum(self) -> int:
+        """
+        Calculate the checksum of this data
+        """
         data = struct.pack(PACKET_FORMAT, *self)
         return checksum_of_data(data)
     def with_checksum(self) -> 'RawPacket':
+        """
+        Overwrite the checksum with the calculated checksum
+        """
         return self._replace(checksum=self.calc_checksum())
     def parse(self) -> 'ParsedPacket':
+        """
+        Parse this data into a ParsedPacket
+        """
         tv, tr, tt = thermistor_temp(self.temp)
         return ParsedPacket(
             checksum=self.checksum,
@@ -142,7 +166,10 @@ class ParsedPacket(NamedTuple):
     fault_thermistor: bool
     gps_speed: float
     motor_speed: float
-    def pack(self) -> RawPacket:
+    def to_raw(self) -> RawPacket:
+        """
+        Convert this data to a RawPacket
+        """
         faults = 0
         if self.fault_low_cell_voltage:
             faults |= 1
